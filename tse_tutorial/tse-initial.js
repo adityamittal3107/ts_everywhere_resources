@@ -1,5 +1,5 @@
 /*
- * This is the script to update for the TS Everywhere tutorial.
+ * This is the script to update for the ThoughtSpot Everywhere tutorial.
  */
 
 const {
@@ -43,7 +43,6 @@ const onLogin = () => {
 
   // TODO - add code to initialize the connection to ThoughtSpot
 
-  // Hides the login page and shows the landing page.
   hideDiv('login');
   showDiv('landing-page');
 }
@@ -104,11 +103,11 @@ document.getElementById('tsURL').innerText = 'ThoughtSpot Server: ' + tsURL;
 // Hook up the events to the buttons and links.
 document.getElementById('login-button').addEventListener('click', onLogin);
 
-// Events for tiles
-document.getElementById('embed-search-tile').addEventListener('click', onSearch);
-document.getElementById('embed-pinboard-tile').addEventListener('click', onPinboard);
-document.getElementById('embed-viz-tile').addEventListener('click', onVisualization);
-document.getElementById('embed-full-app-tile').addEventListener('click', onFull);
+// Events for buttons
+document.getElementById('search-button').addEventListener('click', onSearch);
+document.getElementById('pinboard-button').addEventListener('click', onPinboard);
+document.getElementById('viz-button').addEventListener('click', onVisualization);
+document.getElementById('full-app-button').addEventListener('click', onFull);
 
 // Events for nav bar
 document.getElementById('search-link').addEventListener('click', onSearch);
