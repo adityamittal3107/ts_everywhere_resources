@@ -5,7 +5,7 @@
 <html lang='en'>
 <head>
     <meta charset='UTF-8'/>
-    <title>TSE Tutorial</title>
+    <title>TS Everywhere Tutorial</title>
     <link rel='icon' href='spotshop-icon.png' />
     <link rel='stylesheet' href='tse.css' />
 </head>
@@ -44,28 +44,34 @@
     </div>
     <div id="landing-page" class="hidden">
         <div>
-            <h1 class="page-instructions">Select an embedding option below to get started</h1>
+            <p class="page-instructions">Select an embedding option below to get started</p>
         </div>
         <div class="tile-container">
             <div class="tile" id="embed-search-tile">
-                <img class="tile-image" src="EmbedSearch.png" alt="embed search icon"/>
-                <h2 class="tile-header">Embed Search</h2>
+                <img class="tile-image" src="TSE-search.png" alt="embed search icon"/>
+                <p class="tile-header">Embed Search</p>
                 <p class="tile-description">Embed a search-driven experience to let users ask their own data question</p>
+                <button id="search-button" class="go-button">Go</button>
             </div>
             <div class="tile" id="embed-viz-tile">
-                <img class="tile-image" src="EmbedViz.png" alt="embed visualization icon"/>
-                <h2 class="tile-header">Embed Visualizations</h2>
+                <img class="tile-image" src="TSE-chart.png" alt="embed visualization icon"/>
+                <p class="tile-header">Embed Visualizations</p>
                 <p class="tile-description">Embed a chart or table into your app</p>
+                <button id="viz-button" class="go-button">Go</button>
             </div>
+        </div>
+        <div class="tile-container">
             <div class="tile" id="embed-pinboard-tile">
-                <img class="tile-image" src="EmbedPinboard.png" alt="embed pinboard icon"/>
-                <h2 class="tile-header">Embed Pinboards</h2>
+                <img class="tile-image" src="TSE-pinboard.png" alt="embed pinboard icon"/>
+                <p class="tile-header">Embed Pinboards</p>
                 <p class="tile-description">Embed a pinboard into your app</p>
+                <button id="pinboard-button" class="go-button">Go</button>
             </div>
             <div class="tile" id="embed-full-app-tile">
-                <img class="tile-image" src="EmbedSearch.png" alt="embed full application icon"/>
-                <h2 class="tile-header">Embed Full App</h2>
+                <img class="tile-image" src="TSE-fullapp.png" alt="embed full application icon"/>
+                <p class="tile-header">Embed Full App</p>
                 <p class="tile-description">Embed the full ThoughtSpot application into your app</p>
+                <button id="full-app-button" class="go-button">Go</button>
             </div>
         </div>
     </div>
@@ -77,7 +83,6 @@
             <a id='full-application-link'>Full Application</a>
         </div>
         <div id='embed'>
-            <p style='text-align: left;'><em>&lt;&ndash;&ndash;&nbsp;Select an embedding option from the navbar.</em></p>
         </div>
     </div>
     <script src='https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.js'></script>

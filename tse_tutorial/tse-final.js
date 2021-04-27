@@ -1,5 +1,5 @@
 /*
- * The completed script for the TS Everywhere tutorial.  Your solution should look similar.
+ * The completed script for the ThoughtSpot Everywhere tutorial.  Your solution should look similar.
  * It's recommended to refer to the documentation and Developer Playground to try to get it working before
  * using this file.
  */
@@ -16,7 +16,7 @@ const {
 } = tsembed;
 
 // TODO - set the following for your URL.
-const tsURL = "https://try-internal.thoughtspotstaging.cloud";
+const tsURL = "https://try-internal.thoughtspotstaging.cloud/"
 
 // functions to show and hide div sections.
 const showDiv = divId => {
@@ -41,7 +41,7 @@ const onLogin = () => {
   //const username = document.getElementById('username').value;
   //const password = document.getElementById('password').value;
 
-  console.log(`connecting to ${tsURL}`);
+  console.log(`Connecting to ${tsURL}`);
 
   init({
     thoughtSpotHost: tsURL,
@@ -152,11 +152,11 @@ document.getElementById('tsURL').innerText = 'ThoughtSpot Server: ' + tsURL;
 // Hook up the events to the buttons and links.
 document.getElementById('login-button').addEventListener('click', onLogin);
 
-// Events for tiles
-document.getElementById('embed-search-tile').addEventListener('click', onSearch);
-document.getElementById('embed-pinboard-tile').addEventListener('click', onPinboard);
-document.getElementById('embed-viz-tile').addEventListener('click', onVisualization);
-document.getElementById('embed-full-app-tile').addEventListener('click', onFull);
+// Events for buttons
+document.getElementById('search-button').addEventListener('click', onSearch);
+document.getElementById('pinboard-button').addEventListener('click', onPinboard);
+document.getElementById('viz-button').addEventListener('click', onVisualization);
+document.getElementById('full-app-button').addEventListener('click', onFull);
 
 // Events for nav bar
 document.getElementById('search-link').addEventListener('click', onSearch);
