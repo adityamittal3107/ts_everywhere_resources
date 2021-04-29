@@ -10,7 +10,6 @@ const {
   AuthType,
   Action,
   Page,
-  EmbedEvent
 } = tsembed;
 
 // TODO - set the following for your URL.
@@ -39,8 +38,6 @@ const onLogin = () => {
   //const username = document.getElementById('username').value;
   //const password = document.getElementById('password').value;
 
-  console.log(`Connecting to ${tsURL}`);
-
   // TODO - add code to initialize the connection to ThoughtSpot
 
   hideDiv('login');
@@ -58,46 +55,38 @@ const showMainApp = () => {
 // Functions to embed the content based on user selection.
 
 const onSearch = () => {
-  console.log('embedding search');
   showMainApp();
 
-  // TODO replace the alert and return with the proper embed code.
+  // TODO replace the alert and return with the proper code to embed search.
   alert("Search not embedded");
 }
 
 const onVisualization = () => {
-  const PINBOARD_ID = '2ba03345-d20f-4a10-9509-6e13bbb2e32a';       // TODO - set to your pinboard ID.
-  const VISUALIZATION_ID = 'e2387c53-b83a-43be-84cd-ebb6292c216b';  // TODO - set to your visualization ID.
-
-  console.log(`embedding visualization ${VISUALIZATION_ID} from pinboard ${PINBOARD_ID}`);
   showMainApp();
 
-  // TODO replace the alert with the proper embed code.
+  // TODO replace the alert with the proper code to embed a visualization.
   alert("Visualization not embedded");
 }
 
 const onPinboard = () => {
-  const PINBOARD_ID = '2ba03345-d20f-4a10-9509-6e13bbb2e32a';  // TODO - set to your pinboard ID.
 
-  console.log(`embedding pinboard ${PINBOARD_ID}`);
   showMainApp();
 
-  // TODO replace the alert with the proper embed code.
+  // TODO replace the alert with the proper embed a pinboard.
   alert("Pinboard not embedded");
 }
 
 // Embed the full application.
 const onFull = () => {
-  console.log('embedding full application');
   showMainApp();
 
-  // TODO replace the alert with the proper embed code.
+  // TODO replace the alert with the proper code the full application.
   alert("Full application not embedded");
 }
 
 export { onLogin, onFull, onSearch, onPinboard, onVisualization };
 
-// Set the URL to connect to.
+// Show the URL to connect to.
 document.getElementById('tsURL').innerText = 'ThoughtSpot Server: ' + tsURL;
 
 // Hook up the events to the buttons and links.

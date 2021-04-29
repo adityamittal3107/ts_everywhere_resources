@@ -3,7 +3,6 @@
  * It's recommended to refer to the documentation and Developer Playground to try to get it working before
  * using this file.
  */
-
 const {
   init,
   AppEmbed,
@@ -12,7 +11,6 @@ const {
   AuthType,
   Action,
   Page,
-  EmbedEvent
 } = tsembed;
 
 // TODO - set the following for your URL.
@@ -41,8 +39,6 @@ const onLogin = () => {
   //const username = document.getElementById('username').value;
   //const password = document.getElementById('password').value;
 
-  console.log(`Connecting to ${tsURL}`);
-
   init({
     thoughtSpotHost: tsURL,
     authType: AuthType.None,
@@ -63,14 +59,10 @@ const showMainApp = () => {
 // Functions to embed the content based on user selection.
 
 const onSearch = () => {
-  console.log('embedding search');
   showMainApp();
 
   const embed = new SearchEmbed('#embed', {
-    frameParams: {
-        width: "100%",
-        height: "100%"
-    },
+    frameParams: {},
     collapseDataSources: false,
     hideResults: false,
     disabledActions: [Action.SpotIQAnalyze],
@@ -83,19 +75,12 @@ const onSearch = () => {
 }
 
 const onVisualization = () => {
-  const PINBOARD_ID = '2ba03345-d20f-4a10-9509-6e13bbb2e32a';       // TODO - set to your pinboard ID.
-  const VISUALIZATION_ID = 'e2387c53-b83a-43be-84cd-ebb6292c216b';  // TODO - set to your visualization ID.
-
-  console.log(`embedding visualization ${VISUALIZATION_ID} from pinboard ${PINBOARD_ID}`);
   showMainApp();
 
   const embed = new PinboardEmbed('#embed', {
-    frameParams: {
-      width: "100%",
-      height: "100%"
-    },
-    pinboardId: PINBOARD_ID,
-    vizId: VISUALIZATION_ID,
+    frameParams: {},
+    pinboardId: '2ba03345-d20f-4a10-9509-6e13bbb2e32a',  // TODO - set to your pinboard ID.
+    vizId: 'e2387c53-b83a-43be-84cd-ebb6292c216b',       // TODO - set to your visualization ID.
     disabledActions: [Action.Download],
     disabledActionReason: 'Enterprise feature.',
     hiddenActions: [Action.SpotIQAnalyze]
@@ -105,17 +90,11 @@ const onVisualization = () => {
 }
 
 const onPinboard = () => {
-  const PINBOARD_ID = '2ba03345-d20f-4a10-9509-6e13bbb2e32a';  // TODO - set to your pinboard ID.
-
-  console.log(`embedding pinboard ${PINBOARD_ID}`);
   showMainApp();
 
   const embed = new PinboardEmbed("#embed", {
-      frameParams: {
-        width: "100%",
-        height: "100%"
-      },
-      pinboardId: PINBOARD_ID,
+      frameParams: {},
+      pinboardId: '2ba03345-d20f-4a10-9509-6e13bbb2e32a',  // TODO - set to your pinboard ID.
       disabledActions: [Action.DownloadAsPdf],
       disabledActionReason: 'Enterprise feature.',
       hiddenActions: [Action.PinboardInfo]
@@ -126,14 +105,10 @@ const onPinboard = () => {
 
 // Embed the full application.
 const onFull = () => {
-  console.log('embedding full application');
   showMainApp();
 
   const embed = new AppEmbed('#embed', {
-    frameParams: {
-      width: "100%",
-      height: "100%"
-    },
+    frameParams: {},
     showPrimaryNavbar: false,  // set to true to show the ThoughtSpot navbar
     pageId: Page.Home, // loads the Home tab, but you can start on any main tab - try Page.Search
     disabledActions: [], // list of any actions you don't want the users to use, but still see
@@ -146,7 +121,7 @@ const onFull = () => {
 
 export { onLogin, onFull, onSearch, onPinboard, onVisualization };
 
-// Set the URL to connect to.
+// Show the URL to connect to.
 document.getElementById('tsURL').innerText = 'ThoughtSpot Server: ' + tsURL;
 
 // Hook up the events to the buttons and links.
