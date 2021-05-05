@@ -3,18 +3,21 @@
  * It's recommended to refer to the documentation and Developer Playground to try to get it working before
  * using this file.
  */
+import {ActionData, actionDataToHTML} from "./custom-actions.js";
+
 const {
   init,
-  AppEmbed,
-  SearchEmbed,
-  PinboardEmbed,
-  AuthType,
   Action,
+  AppEmbed,
+  AuthType,
+  EmbedEvent,
   Page,
+  PinboardEmbed,
+  SearchEmbed,
 } = tsembed;
 
 // TODO - set the following for your URL.
-const tsURL = "https://try-internal.thoughtspotstaging.cloud/"
+const tsURL = "https://try.thoughtspot.cloud";
 
 // functions to show and hide div sections.
 const showDiv = divId => {
@@ -30,6 +33,29 @@ const hideDiv = divId => {
 const clearEmbed = () => {
   const div = document.getElementById("embed");
   div.innerHTML = "";
+}
+
+const closeModal = () => {
+  const showDataElement = document.getElementById("show-data")
+  showDataElement.style.display = "none";  // hide the box.
+}
+
+const showData = (payload) => {
+  const data = payload.data;
+  if (data.id === 'show-data' || data.id === 'show-context-data') {
+    // For either action, simply display the data as a table.
+    const actionData = ActionData.createFromJSON(payload);
+    
+    const html = actionDataToHTML(actionData);
+    const dataContentElement = document.getElementById('modal-data-content');
+    dataContentElement.innerHTML = html;
+
+    const dataElement = document.getElementById('show-data');
+    dataElement.style.display = 'block';
+  }
+  else {
+    console.log(`Got unknown custom actions ${data.id}`);
+  }
 }
 
 // Create and manage the login screen.
@@ -71,7 +97,11 @@ const onSearch = () => {
     hideDataSources: false,
   });
 
-  embed.render();
+  embed
+    .on(EmbedEvent.CustomAction, (payload) => {
+        showData(payload);
+    })
+    .render();
 }
 
 const onVisualization = () => {
@@ -122,10 +152,11 @@ const onFull = () => {
 export { onLogin, onFull, onSearch, onPinboard, onVisualization };
 
 // Show the URL to connect to.
-document.getElementById('tsURL').innerText = 'ThoughtSpot Server: ' + tsURL;
+document.getElementById('ts-url').innerText = 'ThoughtSpot Server: ' + tsURL;
 
 // Hook up the events to the buttons and links.
 document.getElementById('login-button').addEventListener('click', onLogin);
+document.getElementById('close-modal').addEventListener('click', closeModal);
 
 // Events for buttons
 document.getElementById('search-button').addEventListener('click', onSearch);

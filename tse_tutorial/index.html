@@ -8,6 +8,7 @@
     <title>TS Everywhere Tutorial</title>
     <link rel='icon' href='spotshop-icon.png' />
     <link rel='stylesheet' href='tse.css' />
+    <link rel='stylesheet' href='custom-action.css' />
 </head>
 <body>
     <div id="header">
@@ -26,9 +27,16 @@
             </svg>
         <span class='use-case-name'>&nbsp;|&nbsp;Retail Analytics</span>
     </div>
+    <!-- The following is for a modal section that will show custom action data. -->
+    <div id="show-data" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <span id="modal-data-content"></span>
+        </div>
+    </div>
     <div id='login' class='visible'>
-        <form id='loginForm'>
-            <span id='tsURL'></span>
+        <form id='login-form'>
+            <span id='ts-url'></span>
             <br/>
             <!-- The following can be used if you want to use AuthType.Basic
             <label for='username'>Username: </label>
@@ -86,6 +94,7 @@
         </div>
     </div>
     <script src='https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.js'></script>
+    <script src='custom-actions.js' type='module'></script>
     <script src='tse.js' type='module'></script>
 </body>
 </html>
