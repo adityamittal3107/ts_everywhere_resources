@@ -42,7 +42,7 @@ const closeModal = () => {
 
 const showData = (payload) => {
   const data = payload.data;
-  if (data.id === 'show-data' || data.id === 'show-context-data') {
+  if (data.id === 'show-data') {
     // For either action, simply display the data as a table.
     const actionData = ActionData.createFromJSON(payload);
     

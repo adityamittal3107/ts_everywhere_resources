@@ -33,7 +33,7 @@ h1 {
   color: white;
 }
 
-#loginForm {
+#login-form {
   font-family: sans-serif;
   padding: 30px;
   display: flex;
