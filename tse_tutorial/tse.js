@@ -40,21 +40,7 @@ const closeModal = () => {
 }
 
 const showData = (payload) => {
-  const data = payload.data;
-  if (data.id === 'show-data' || data.id === 'show-context-data') {
-    // For either action, simply display the data as a table.
-    const actionData = ActionData.createFromJSON(payload);
-
-    const html = actionDataToHTML(actionData);
-    const dataContentElement = document.getElementById('modal-data-content');
-    dataContentElement.innerHTML = html;
-
-    const dataElement = document.getElementById('show-data');
-    dataElement.style.display = 'block';
-  }
-  else {
-    console.log(`Got unknown custom actions ${data.id}`);
-  }
+  // TODO - add code to handle the custom action callback.
 }
 
 // Create and manage the login screen.
