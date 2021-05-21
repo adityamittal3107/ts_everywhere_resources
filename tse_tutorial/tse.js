@@ -1,8 +1,7 @@
 /*
  * This is the script to update for the ThoughtSpot Everywhere tutorial.
  */
-
-import {ActionData, actionDataToHTML} from "./custom-actions.js";
+import {ActionData, tabularDataToHTML} from "./dataclasses.js";
 
 const {
   init,

@@ -3,7 +3,7 @@
  * It's recommended to refer to the documentation and Developer Playground to try to get it working before
  * using this file.
  */
-import {ActionData, actionDataToHTML} from "./custom-actions.js";
+import {ActionData, tabularDataToHTML} from "./dataclasses.js";
 
 const {
   init,
@@ -46,7 +46,7 @@ const showData = (payload) => {
     // For either action, simply display the data as a table.
     const actionData = ActionData.createFromJSON(payload);
     
-    const html = actionDataToHTML(actionData);
+    const html = tabularDataToHTML(actionData);
     const dataContentElement = document.getElementById('modal-data-content');
     dataContentElement.innerHTML = html;
 
