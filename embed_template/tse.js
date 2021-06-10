@@ -11,12 +11,23 @@ const tsURL = "https://try.thoughtspot.cloud/";  // Set to the URL for your syst
 const embed = () => {
   tsInit();
   embedSearch();
+  //embedPinboard();
+  //embedPinboardViz();
 }
 
 const tsInit = () => {
 }
 
 const embedSearch = () => {
+  // Add search embed here.
+}
+
+const embedPinboard = () => {
+  // Add pinboard embed here.
+}
+
+const embedPinboardViz = () => {
+  // Add pinboard viz embed here.
 }
 
 window.onload = embed;
