@@ -152,7 +152,6 @@ export class TabularData {
     }
 
     const results = zip(arrays);
-    console.log(results);
     return results;  // returns a two dimensional data array for the columns requested.
   }
 }
@@ -278,7 +277,7 @@ export class PinboardContextActionData extends TabularData {
    * @returns {PinboardContextActionData}
    */
   static createFromJSON(jsonData) {
-    jsonData = JSON.parse(jsonData);
+    jsonData = JSON.parse(jsonData.data);
     const contextActionData = new PinboardContextActionData();
 
     const columnNames = [];

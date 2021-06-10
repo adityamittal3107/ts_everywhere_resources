@@ -152,7 +152,6 @@ export class TabularData {
     }
 
     const results = zip(arrays);
-    console.log(results);
     return results;  // returns a two dimensional data array for the columns requested.
   }
 }
@@ -279,7 +278,6 @@ export class PinboardContextActionData extends TabularData {
    */
   static createFromJSON(jsonData) {
     jsonData = JSON.parse(jsonData.data);
-    console.log(jsonData);
     const contextActionData = new PinboardContextActionData();
 
     const columnNames = [];
@@ -289,12 +287,9 @@ export class PinboardContextActionData extends TabularData {
     // jsonData.data.contextMenuPoints.[deselectedAttributes|deselectedMeasures|selectedAttributes|selectedMeasures]
     // This approach means attributes will always come first and then measures.  This gets all values in the row.
     let colCnt = 0;
-    console.log("Getting columns");
     for (let section of ["selectedAttributes", "deselectedAttributes", "selectedMeasures", "deselectedMeasures"]) {
       for (let column of jsonData.clickedPoint[section]) {
-        console.log(`Getting column ${column} section`);
         const columnName = column.column.name;
-        console.log(`${columnName}: ${column.value} `);
         columnNames.push(columnName);
         columnValues.push([column.value]);
         colCnt++;
