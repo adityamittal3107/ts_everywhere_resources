@@ -34,7 +34,7 @@ const embed = new PinboardEmbed("#embed", {
 
 The pinboardId is the ID for the pinboard to be filtered.  You can find the ID using the Developer Playground.
 
-Now, when rending, add the hook for the custom action:
+Now, when rendering, add the hook for the custom action:
 
 ~~~
   embed
