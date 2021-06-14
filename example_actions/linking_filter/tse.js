@@ -28,11 +28,9 @@ let values = [''];
 
 const filterData = (payload) => {
   const actionData = PinboardContextActionData.createFromJSON(payload);
-  console.log(actionData);
   columnName = actionData.columnNames[0];
   values = [];
   values.push(actionData.data[columnName][0]);
-  console.log(`Filtering on ${columnName}: ${values}`)
   embedPinboard();
 }
 
