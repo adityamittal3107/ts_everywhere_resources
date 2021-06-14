@@ -1,3 +1,5 @@
+// Contains an example of a completed embed with embedded search.
+
 // Add additional imports as needed.
 const {
   init,
