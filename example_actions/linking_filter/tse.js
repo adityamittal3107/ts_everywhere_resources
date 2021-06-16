@@ -24,14 +24,14 @@ const tsInit = () => {
   });
 }
 
-let columnNameToFilter = ''; // Fill in with the column name you want the values retrieved from and filtered on
+let columnNameToFilter = ''; // Global value for the column name that will be used to filter
 let filterValues = [''];  // Global array of filterValues, used in the runtimeFilters when the Pinboard is rendered. Starts blank so no filter is applied
 
 // Function to handle the payload response from the Custom Action 
 // Updates the global filterValues array, then re-runs the embedPinboard to reload the original Pinboard with the updated values in the runtimeFilters
 const filterData = (payload) => {
   const actionData = PinboardContextActionData.createFromJSON(payload);
-  columnName = actionData.columnNames[0];
+  columnNameToFilter = actionData.columnNames[0];
   filterValues = [];
   filterValues.push(actionData.data[columnNametoFilter][0]);
   embedPinboard();
