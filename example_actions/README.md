@@ -18,6 +18,8 @@ If you want to just test an example action, you should follow these steps:
 4. Update the tse.js file to include your cluster specific settings, such as URL, pinboard IDs, etc.  The changes required will vary based on the example.
 5. Run locally using a web servers, such as `python3 -m http.server <por>`.
 
+Some examples also require the dataclasses.js or rest-api.js files from the apis folder.  Those scenarios will be listed in the README for that particular examples.
+
 ## Security Requirements
 
 To run any example, you will need to have your server set in the CSP Visual Embed Hosts section of the Develop Security settings as shown below.  This setting will not allow you to make REST calls (such as login), so you should use `AuthType.None` as shown in the examples.  See the [ThoughtSpot documentation](https://cloud-docs.thoughtspot.com/admin/ts-cloud/security-settings.html) for additional information about security settings.
