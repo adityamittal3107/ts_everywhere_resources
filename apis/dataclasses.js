@@ -41,7 +41,7 @@ export class TabularData {
     this.data = {};  // The data is narmalized to be stored by column with the key being the column name.  This
                      // makes it easy to just get a subset of columns in any order.
     this.originalData = originalData; // The original data from the API.
-    this._cns = []
+    this._cns = []   // column names
     this._nbrRows = 0;  // Number of rows of data.
   }
 
@@ -166,11 +166,14 @@ export class ActionData extends TabularData {
     // Creates a new ActionData object from JSON.
     const actionData = new ActionData(jsonData);
 
-    let columnNames = [];
+    // Note that you can get more column names than data and that the data column are aligned by column ID.
+    let originalColumnNames = [];
+    let columnIds = [];
     // Get the column meta information.
     const nbrCols = jsonData.data.columnsAndData.columns.length;
     for (let colCnt = 0; colCnt < nbrCols; colCnt += 1) {
-      columnNames.push(jsonData.data.columnsAndData.columns[colCnt].column.name);
+      originalColumnNames.push(jsonData.data.columnsAndData.columns[colCnt].column.name);
+      columnIds.push(jsonData.data.columnsAndData.columns[colCnt].column.id);
     }
 
     // can come in two flavors, so need to get the right data
@@ -179,8 +182,16 @@ export class ActionData extends TabularData {
       : jsonData.data.columnsAndData.data.columnDataLite;
 
     const data = [];
-    for (let cnt = 0; cnt < columnNames.length; cnt++) {
-      data.push(dataSet[cnt].dataValue);  // should be an array of columns values.
+    let columnNames = [];
+    for (let cnt = 0; cnt < dataSet.length; cnt++) {
+      const columnIdx = columnIds.indexOf(dataSet[cnt].columnId);  // find the right column.
+      if (columnIdx < 0) {
+        console.error(`Data error: ${dataSet[cnt].columnId} not found in the columns names.`);
+      }
+      else {
+        columnNames.push(originalColumnNames[columnIdx]);
+        data.push(dataSet[cnt].dataValue);  // should be an array of columns values.
+      }
     }
 
     actionData.columnNames = columnNames;
@@ -393,4 +404,25 @@ export const tabularDataToHTML = (tabularData) => {
   table += '</table>';
 
   return table;
+}
+
+/**
+ * Converts tabular data to CSV format that can be displayed or downloaded.
+ * @param tabularData A TabularData object.
+ */
+export const tabularDataToCSV = (tabularData) => {
+  let csv = 'data:text/csv;charset=utf-8,';
+
+  // Get the column names as header values.
+  const columnNames = tabularData.columnNames.map(cn => cn.replaceAll('"', '""')); // convert quotes for embedding.
+  csv += '"' + columnNames.join('","') + '"\n';
+
+  // get the data as a table and add it to the CSV.
+  const data = tabularData.getDataAsTable();
+  for (let rnbr = 0; rnbr < tabularData.nbrRows; rnbr++) {
+    const row = data[rnbr].map(d => d.replaceAll('"', '""')); // convert quotes for embedding
+    csv += '"' + row.join('","') + '"\n';
+  }
+
+  return csv;
 }
