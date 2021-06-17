@@ -46,7 +46,7 @@ Now, when rendering, add the hook for the custom action:
   .render();
 ~~~
 
-Now the `filterData()` function will be called when the the custom action is selected.  
+Now the `filterData()` function will be called when the custom action is selected.  
 
 Finally, the `filterData()` function will handle the content and call to render the pinboard again with updated filters.
 
