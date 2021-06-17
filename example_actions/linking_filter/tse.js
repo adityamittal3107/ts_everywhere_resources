@@ -1,3 +1,8 @@
+/*
+This example shows how to implement content linking in pinboards.
+This is accomplished by creating a context filter and then using the selected value to refresh the pinboard.
+ */
+
 // Add additional imports as needed.
 const {
   init,
