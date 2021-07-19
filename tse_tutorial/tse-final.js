@@ -5,7 +5,7 @@
  */
 import {ActionData, tabularDataToHTML} from "./dataclasses.js";
 
-const {
+import {
   init,
   Action,
   AppEmbed,
@@ -14,7 +14,7 @@ const {
   Page,
   PinboardEmbed,
   SearchEmbed,
-} = tsembed;
+} from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
 // TODO - set the following for your URL.
 const tsURL = "https://try.thoughtspot.cloud";
@@ -104,6 +104,20 @@ const onSearch = () => {
     .render();
 }
 
+const onPinboard = () => {
+  showMainApp();
+
+  const embed = new PinboardEmbed("#embed", {
+      frameParams: {},
+      pinboardId: '2ba03345-d20f-4a10-9509-6e13bbb2e32a',  // TODO - set to your pinboard ID.
+      disabledActions: [Action.DownloadAsPdf],
+      disabledActionReason: 'Enterprise feature.',
+      hiddenActions: [Action.PinboardInfo]
+  });
+
+  embed.render();
+}
+
 const onVisualization = () => {
   showMainApp();
 
@@ -114,20 +128,6 @@ const onVisualization = () => {
     disabledActions: [Action.Download],
     disabledActionReason: 'Enterprise feature.',
     hiddenActions: [Action.SpotIQAnalyze]
-  });
-
-  embed.render();
-}
-
-const onPinboard = () => {
-  showMainApp();
-
-  const embed = new PinboardEmbed("#embed", {
-      frameParams: {},
-      pinboardId: '2ba03345-d20f-4a10-9509-6e13bbb2e32a',  // TODO - set to your pinboard ID.
-      disabledActions: [Action.DownloadAsPdf],
-      disabledActionReason: 'Enterprise feature.',
-      hiddenActions: [Action.PinboardInfo]
   });
 
   embed.render();

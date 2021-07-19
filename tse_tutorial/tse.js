@@ -3,7 +3,7 @@
  */
 import {ActionData, tabularDataToHTML} from "./dataclasses.js";
 
-const {
+import {
   init,
   Action,
   AppEmbed,
@@ -12,7 +12,7 @@ const {
   Page,
   PinboardEmbed,
   SearchEmbed,
-} = tsembed;
+} from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
 // TODO - set the following for your URL.
 const tsURL = "https://try.thoughtspot.cloud";
@@ -72,19 +72,19 @@ const onSearch = () => {
   alert("Search not embedded");
 }
 
-const onVisualization = () => {
-  showMainApp();
-
-  // TODO replace the alert with the proper code to embed a visualization.
-  alert("Visualization not embedded");
-}
-
 const onPinboard = () => {
 
   showMainApp();
 
   // TODO replace the alert with the proper embed a pinboard.
   alert("Pinboard not embedded");
+}
+
+const onVisualization = () => {
+  showMainApp();
+
+  // TODO replace the alert with the proper code to embed a visualization.
+  alert("Visualization not embedded");
 }
 
 // Embed the full application.

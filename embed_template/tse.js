@@ -5,13 +5,13 @@
  */
 
 // Add additional imports as needed.
-const {
+import {
   init,
   Action,
   AuthType,
   SearchEmbed,
   PinboardEmbed,
-} = tsembed;
+} from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
 const tsURL = "https://try.thoughtspot.cloud/";  // Set to the URL for your system.
 
