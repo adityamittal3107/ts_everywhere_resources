@@ -25,6 +25,7 @@ const embed = () => {
   //embedSearch();
   //embedPinboard();
   //embedPinboardViz();
+  //embedFull();
 }
 
 /**
@@ -57,6 +58,13 @@ const embedPinboard = () => {
  */
 const embedPinboardViz = () => {
   // Add pinboard viz embed here.
+}
+
+/**
+ * Embeds the full application.  Add a full embed component with flags and render.
+ */
+const embedFull = () => {
+  // Add full embed here.
 }
 
 window.onload = embed;
