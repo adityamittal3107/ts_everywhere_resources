@@ -9,9 +9,15 @@ import {
   init,
   Action,
   AuthType,
-  SearchEmbed,
+  EmbedEvent,
   PinboardEmbed,
+  SearchEmbed,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
+
+import {
+  closeModal,
+  showPayload
+} from "./custom-actions.js";
 
 const tsURL = "https://try.thoughtspot.cloud/";  // Set to the URL for your system.
 
@@ -22,7 +28,7 @@ const tsURL = "https://try.thoughtspot.cloud/";  // Set to the URL for your syst
  */
 const embed = () => {
   tsInit();
-  //embedSearch();
+  embedSearch();
   //embedPinboard();
   //embedPinboardViz();
   //embedFull();
@@ -40,10 +46,19 @@ const tsInit = () => {
 }
 
 /**
- * Add a SearchEmbed component and render.
+ * Basic search embed with no datasource or filters.
  */
 const embedSearch = () => {
-  // Add search embed here.
+  const embed = new SearchEmbed("#embed", {
+    frameParams: {}
+  });
+
+  console.log("rendering embed");
+  embed
+    .on(EmbedEvent.CustomAction, (payload) => {
+       showPayload(payload);
+    })
+    .render();
 }
 
 /**
@@ -66,5 +81,8 @@ const embedPinboardViz = () => {
 const embedFull = () => {
   // Add full embed here.
 }
+
+document.getElementById('close-modal').addEventListener('click', closeModal);
+document.getElementById('thoughtspot-server').innerHTML = `ThoughtSpot Server: ${tsURL}`;
 
 window.onload = embed;
