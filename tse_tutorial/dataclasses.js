@@ -1,5 +1,3 @@
-"use strict";
-
 /*
  * Contains classes for handing API data.
  */
@@ -13,6 +11,19 @@ const zip = (arrays) => {
     return arrays.map(function (array) {
       return array[i]
     })
+  });
+}
+
+/**
+ * Sorts an array of objects (changinge the array) based on some attribute in the array.
+ * @param arrayOfObjs The array of objects to sort.
+ * @param attr The attribute to use for sorting.  Always sorts ascending.
+ */
+export const sortObjects = (arrayOfObjs, attr) => {
+  arrayOfObjs.sort((first, second) => {
+    if (first[attr] < second[attr]) return -1;
+    if (first[attr] > second[attr]) return 1;
+    return 0
   });
 }
 
@@ -57,7 +68,7 @@ export class TabularData {
    * Returns the column names.
    * @returns {[]} An array containing the column names.
    */
-  get columnNames () {
+  get columnNames() {
     return Array.from(this._cns); // avoid manipulation.
   }
 
@@ -65,7 +76,7 @@ export class TabularData {
    * Returns the number of columns in the tabular data.
    * @returns {number} The number of columns.
    */
-  get nbrColumns () {
+  get nbrColumns() {
     return this._cns.length;
   }
 
@@ -73,7 +84,7 @@ export class TabularData {
    * Returns the number of rows of data.
    * @returns {number} The number of rows of data.
    */
-  get nbrRows () {
+  get nbrRows() {
     return this._nbrRows;
   }
 
@@ -166,36 +177,46 @@ export class ActionData extends TabularData {
     // Creates a new ActionData object from JSON.
     const actionData = new ActionData(jsonData);
 
-    // Note that you can get more column names than data and that the data column are aligned by column ID.
-    let originalColumnNames = [];
-    let columnIds = [];
-    // Get the column meta information.
-    const nbrCols = jsonData.data.columnsAndData.columns.length;
-    for (let colCnt = 0; colCnt < nbrCols; colCnt += 1) {
-      originalColumnNames.push(jsonData.data.columnsAndData.columns[colCnt].column.name);
-      columnIds.push(jsonData.data.columnsAndData.columns[colCnt].column.id);
-    }
-
-    // can come in two flavors, so need to get the right data
-    const dataSet = (Array.isArray(jsonData.data.columnsAndData.data))
-      ? jsonData.data.columnsAndData.data[0].columnDataLite
-      : jsonData.data.columnsAndData.data.columnDataLite;
-
-    const data = [];
-    let columnNames = [];
-    for (let cnt = 0; cnt < dataSet.length; cnt++) {
-      const columnIdx = columnIds.indexOf(dataSet[cnt].columnId);  // find the right column.
-      if (columnIdx < 0) {
-        console.error(`Data error: ${dataSet[cnt].columnId} not found in the columns names.`);
+    try {
+      let dataRoot = jsonData.data.embedAnswerData;
+      if (!dataRoot) {
+        // Data root changed in pre-7.jul.cl.  This can be eventually taken out.
+        dataRoot = jsonData.data.columnsAndData;
       }
-      else {
-        columnNames.push(originalColumnNames[columnIdx]);
-        data.push(dataSet[cnt].dataValue);  // should be an array of columns values.
-      }
-    }
 
-    actionData.columnNames = columnNames;
-    actionData.populateDataByColumn(data);
+      // Note that you can get more column names than data and that the data column are aligned by column ID.
+      let originalColumnNames = [];
+      let columnIds = [];
+      // Get the column meta information.
+      const nbrCols = dataRoot.columns.length;
+      for (let colCnt = 0; colCnt < nbrCols; colCnt += 1) {
+        originalColumnNames.push(dataRoot.columns[colCnt].column.name);
+        columnIds.push(dataRoot.columns[colCnt].column.id);
+      }
+
+      // can come in two flavors, so need to get the right data
+      const dataSet = (Array.isArray(dataRoot.data))
+        ? dataRoot.data[0].columnDataLite
+        : dataRoot.data.columnDataLite;
+
+      const data = [];
+      let columnNames = [];
+      for (let cnt = 0; cnt < dataSet.length; cnt++) {
+        const columnIdx = columnIds.indexOf(dataSet[cnt].columnId);  // find the right column.
+        if (columnIdx < 0) {
+          console.error(`Data error: ${dataSet[cnt].columnId} not found in the columns names.`);
+        } else {
+          columnNames.push(originalColumnNames[columnIdx]);
+          data.push(dataSet[cnt].dataValue);  // should be an array of columns values.
+        }
+      }
+
+      actionData.columnNames = columnNames;
+      actionData.populateDataByColumn(data);
+    } catch (error) {
+      console.error(`Error creating action data: ${error}`);
+      console.error(jsonData);
+    }
 
     return actionData;
   }
@@ -217,29 +238,35 @@ export class PinboardActionData extends TabularData {
     jsonData = JSON.parse(jsonData);
     const pinboardActionData = new PinboardActionData(jsonData);
 
-    const reportBookData = getValues(jsonData.reportBookData)[0]; // assume there's only one.
-    const vizData = getValues(reportBookData.vizData)[0]; // assume there's only one.
+    try {
 
-    let columnNames = [];
-    // Get the column meta information.
-    const columns = vizData.dataSets.PINBOARD_VIZ.columns;
-    const nbrCols = columns.length;
-    for (let colCnt = 0; colCnt < nbrCols; colCnt += 1) {
-      columnNames.push(columns[colCnt].column.name);
+      const reportBookData = getValues(jsonData.reportBookData)[0]; // assume there's only one.
+      const vizData = getValues(reportBookData.vizData)[0]; // assume there's only one.
+
+      let columnNames = [];
+      // Get the column meta information.
+      const columns = vizData.dataSets.PINBOARD_VIZ.columns;
+      const nbrCols = columns.length;
+      for (let colCnt = 0; colCnt < nbrCols; colCnt += 1) {
+        columnNames.push(columns[colCnt].column.name);
+      }
+
+      // can come in two flavors, so need to get the right data
+      const dataSet = (Array.isArray(vizData.dataSets.PINBOARD_VIZ.data))
+        ? vizData.dataSets.PINBOARD_VIZ.data[0].columnDataLite
+        : vizData.dataSets.PINBOARD_VIZ.data.columnDataLite;
+
+      const data = [];
+      for (let cnt = 0; cnt < columnNames.length; cnt++) {
+        data.push(dataSet[cnt].dataValue);  // should be an array of columns values.
+      }
+
+      pinboardActionData.columnNames = columnNames;
+      pinboardActionData.populateDataByColumn(data);
+    } catch (error) {
+      console.error(`Error creating pinboard action data: ${error}`);
+      console.error(jsonData);
     }
-
-    // can come in two flavors, so need to get the right data
-    const dataSet = (Array.isArray(vizData.dataSets.PINBOARD_VIZ.data))
-      ? vizData.dataSets.PINBOARD_VIZ.data[0].columnDataLite
-      : vizData.dataSets.PINBOARD_VIZ.data.columnDataLite;
-
-    const data = [];
-    for (let cnt = 0; cnt < columnNames.length; cnt++) {
-      data.push(dataSet[cnt].dataValue);  // should be an array of columns values.
-    }
-
-    pinboardActionData.columnNames = columnNames;
-    pinboardActionData.populateDataByColumn(data);
 
     return pinboardActionData;
   }
@@ -254,24 +281,28 @@ export class ContextActionData extends TabularData {
     // Creates a new ActionData object from JSON.
     const contextActionData = new ContextActionData(jsonData);
 
-    const columnNames = [];
-    const columnValues = [];
+    try {
 
-    // The actual data is stored in
-    // jsonData.data.contextMenuPoints.[deselectedAttributes|deselectedMeasures|selectedAttributes|selectedMeasures]
-    // This approach means attributes will always come first and then measures.  This gets all values in the row.
-    let colCnt = 0;
-    for (let section of ["selectedAttributes", "deselectedAttributes", "selectedMeasures", "deselectedMeasures"]) {
-      for (let column of jsonData.data.contextMenuPoints.clickedPoint[section]) {
-        const columnName = column.column.name;
-        columnNames.push(columnName);
-        columnValues.push([column.value]);
-        colCnt++;
+      const columnNames = [];
+      const columnValues = [];
+
+      // The actual data is stored in
+      // jsonData.data.contextMenuPoints.[deselectedAttributes|deselectedMeasures|selectedAttributes|selectedMeasures]
+      // This approach means attributes will always come first and then measures.  This gets all values in the row.
+      for (let section of ["selectedAttributes", "deselectedAttributes", "selectedMeasures", "deselectedMeasures"]) {
+        for (let column of jsonData.data.contextMenuPoints.clickedPoint[section]) {
+          const columnName = column.column.name;
+          columnNames.push(columnName);
+          columnValues.push([column.value]);
+        }
       }
-    }
 
-    contextActionData.columnNames = columnNames;
-    contextActionData.populateDataByColumn(columnValues);
+      contextActionData.columnNames = columnNames;
+      contextActionData.populateDataByColumn(columnValues);
+    } catch (error) {
+      console.error(`Error creating context action data: ${error}`);
+      console.error(jsonData);
+    }
 
     return contextActionData;
   }
@@ -291,24 +322,28 @@ export class PinboardContextActionData extends TabularData {
     jsonData = JSON.parse(jsonData.data);
     const contextActionData = new PinboardContextActionData();
 
-    const columnNames = [];
-    const columnValues = [];
+    try {
 
-    // The actual data is stored in
-    // jsonData.data.contextMenuPoints.[deselectedAttributes|deselectedMeasures|selectedAttributes|selectedMeasures]
-    // This approach means attributes will always come first and then measures.  This gets all values in the row.
-    let colCnt = 0;
-    for (let section of ["selectedAttributes", "deselectedAttributes", "selectedMeasures", "deselectedMeasures"]) {
-      for (let column of jsonData.clickedPoint[section]) {
-        const columnName = column.column.name;
-        columnNames.push(columnName);
-        columnValues.push([column.value]);
-        colCnt++;
+      const columnNames = [];
+      const columnValues = [];
+
+      // The actual data is stored in
+      // jsonData.data.contextMenuPoints.[deselectedAttributes|deselectedMeasures|selectedAttributes|selectedMeasures]
+      // This approach means attributes will always come first and then measures.  This gets all values in the row.
+      for (let section of ["selectedAttributes", "deselectedAttributes", "selectedMeasures", "deselectedMeasures"]) {
+        for (let column of jsonData.clickedPoint[section]) {
+          const columnName = column.column.name;
+          columnNames.push(columnName);
+          columnValues.push([column.value]);
+        }
       }
-    }
 
-    contextActionData.columnNames = columnNames;
-    contextActionData.populateDataByColumn(columnValues);
+      contextActionData.columnNames = columnNames;
+      contextActionData.populateDataByColumn(columnValues);
+    } catch (error) {
+      console.error(`Error creating pinboard context action data: ${error}`);
+      console.error(jsonData);
+    }
 
     return contextActionData;
   }
@@ -345,12 +380,17 @@ export class PinboardData {
   static createFromJSON(jsonData) {
     // Creates a PinboardData object from JSON.
     const pinboardData = new PinboardData();
-    for (const vizId in jsonData) {
-      const vizData = new VizData();
-      vizData.columnNames = jsonData[vizId].columnNames;
-      vizData.populateDataByColumn(jsonData[vizId].data);
+    try {
+      for (const vizId in jsonData) {
+        const vizData = new VizData();
+        vizData.columnNames = jsonData[vizId].columnNames;
+        vizData.populateDataByRow(jsonData[vizId].data);
 
-      pinboardData.vizData[vizId] = vizData;
+        pinboardData.vizData[vizId] = vizData;
+      }
+    } catch (error) {
+      console.error(`Error creating pinboard data: ${error}`);
+      console.error(jsonData);
     }
 
     return pinboardData;
@@ -370,8 +410,14 @@ export class SearchData extends TabularData {
   static createFromJSON(jsonData) {
     // Creates a new SearchData object from JSON
     const searchData = new SearchData(jsonData);
-    searchData.columnNames = jsonData.columnNames;
-    searchData.populateDataByRow(jsonData.data);
+    try {
+      searchData.columnNames = jsonData.columnNames;
+      searchData.populateDataByRow(jsonData.data);
+    } catch (error) {
+      console.error(`Error creating search data: ${error}`);
+      console.error(jsonData);
+    }
+
     return searchData;
   }
 
