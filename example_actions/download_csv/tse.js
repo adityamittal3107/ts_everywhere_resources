@@ -3,12 +3,12 @@ This example shows how to embed use a custom action to download data as a CSV fi
 main actions in Search and Answers.  It will not work in Context Actions or Pinboard Actions.
  */
 // Add additional imports as needed.
-const {
+import {
   init,
   AuthType,
   EmbedEvent,
   SearchEmbed,
-} = tsembed;
+} from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
 // You need to download dataclasses from the /api folder.
 import { ActionData, tabularDataToCSV } from "./dataclasses.js";
