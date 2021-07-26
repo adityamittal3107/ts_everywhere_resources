@@ -1,6 +1,7 @@
 # Embed download as CSV
 
 This example shows how to add a custom action to download CSV.  ThoughtSpot allows you to download tabular data as CSV, but not charts.  This custom action adds that capability.  
+
 ## Setup
 
 Add a callback custom action that applies to the main action or menu in an answer.  
