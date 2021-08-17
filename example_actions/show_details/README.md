@@ -4,7 +4,7 @@ This example shows how to use a custom action in a context menu to show a pre-de
 
 ## Setup
 
-For this example, you'll need a custom action to add to the pinboard.  In this example, the action is called 'show-detail' and is configured as shown in the image.  This action is set to be on the context menu and not be added globally.
+For this example, you'll need a custom action to add to the pinboard.  In this example, the action is called 'show-more' and is configured as shown in the image.  This action is set to be on the context menu and not be added globally.
 
 ![Custom action configuration](ca_custom_action.png)
 
