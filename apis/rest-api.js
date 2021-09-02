@@ -206,9 +206,11 @@ export const getWorksheetGUIDs = async (tsurl, worksheetName) => {
  * @param tsurl The URL for the ThoughtSpot cluster.
  * @param pinboardId The GUID for the pinboard to get data for.
  * @param vizIds Optional GUIDs to only get certain visualizations.  String or array.
+ * @param filters Optional runtime filters.  This is an array of objects like
+ * [ { column: "colname", operator: "eq", value: "values" }, ...] the values can be a string or array.
  * @returns {Promise<any|void>} A promise that will return the data in JSON form.
  */
-export const getPinboardData = async (tsurl, pinboardId, vizIds) => {
+export const getPinboardData = async (tsurl, pinboardId, vizIds, filters) => {
   console.log(`Getting data from pinboard ${pinboardId} and visualization(s) ${vizIds}`)
   let getPinboardDataURL = `${tsurl}/callosum/v1/tspublic/v1/pinboarddata?batchSize=-1&id=${pinboardId}`;
 
@@ -220,6 +222,21 @@ export const getPinboardData = async (tsurl, pinboardId, vizIds) => {
     // TODO add handling for invalid types.  Currently only support string and array.
     const formattedVizIds = `["${vizIds.join('","')}"]`;
     getPinboardDataURL += '&vizid=' + formattedVizIds;
+  }
+
+  if (filters) {
+    let count = 1;
+    for (const f of filters) { // { column, operator, value }
+      getPinboardDataURL += `&col${count}=${f.column}&op${count}=${f.operator}`;
+      if (Array.isArray(f.value)) {
+        for (const v of f.value) {
+          getPinboardDataURL += `&val${count}=${v}`;
+        }
+      }
+      else {
+        getPinboardDataURL += `&val${count}=${f.value}`;
+      }
+    }
   }
 
   return await fetch(
