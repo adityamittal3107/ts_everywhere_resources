@@ -236,6 +236,7 @@ export const getPinboardData = async (tsurl, pinboardId, vizIds, filters) => {
       else {
         getPinboardDataURL += `&val${count}=${f.value}`;
       }
+      count++;
     }
   }
 
