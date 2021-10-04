@@ -178,7 +178,10 @@ export class ActionData extends TabularData {
     const actionData = new ActionData(jsonData);
 
     try {
-      let dataRoot = jsonData.data.embedAnswerData;
+      let dataRoot = jsonData.payload.embedAnswerData; // sep 21 release
+      if (!dataRoot) {
+        dataRoot = jsonData.data.embedAnswerData;  // jul-aug 21
+      }
       if (!dataRoot) {
         // Data root changed in pre-7.jul.cl.  This can be eventually taken out.
         dataRoot = jsonData.data.columnsAndData;
@@ -289,8 +292,13 @@ export class ContextActionData extends TabularData {
       // The actual data is stored in
       // jsonData.data.contextMenuPoints.[deselectedAttributes|deselectedMeasures|selectedAttributes|selectedMeasures]
       // This approach means attributes will always come first and then measures.  This gets all values in the row.
+      let contextMenuPoints = jsonData.payload.contextMenuPoints; // sep 21
+      if (!contextMenuPoints) {  // pre-sep 21
+        contextMenuPoints = jsonData.data.contextMenuPoints;
+      }
+
       for (let section of ["selectedAttributes", "deselectedAttributes", "selectedMeasures", "deselectedMeasures"]) {
-        for (let column of jsonData.data.contextMenuPoints.clickedPoint[section]) {
+        for (let column of contextMenuPoints.clickedPoint[section]) {
           const columnName = column.column.name;
           columnNames.push(columnName);
           columnValues.push([column.value]);
