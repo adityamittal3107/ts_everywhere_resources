@@ -2,6 +2,8 @@
  * This file contains Javascript wrappers for common API calls that are used with embedding scenarios.
  */
 
+/*---------------------------------------------- Helper functions ----------------------------------------------------*/
+
 /**
  * If the value isn't an array, convert it to an array.
  * @param valueOrArray a value or an array.
@@ -22,6 +24,47 @@ const cleanURL = (url) => {
   return (url.endsWith("/")) ? url.substr(0, url.length - 1) : url
 }
 
+/*-------------------------------------------------- API wrappers ----------------------------------------------------*/
+
+/**
+ * Performs basic login.  If using the the SDK, use the init() function instead.  This is mostly used for testing.
+ * @param tsurl The URL for the ThoughtSpot cluster.
+ * @param username The username to log into the system.
+ * @param password The password for the user.
+ * @param rememberme Causes the login to be remembered if true. Defaults to false.
+ * @returns {Promise<void>} A promise for the login.  Await to make sure the user is logged in.
+ */
+export const tsLogin = async (tsurl, username, password, rememberme=false) => {
+  console.log(`Logging into ThoughtSpot as ${username}`);
+  const loginURL = cleanURL(tsurl) + "/callosum/v1/tspublic/v1/session/login";
+
+  // TODO this is common.  Extract as a helper function.
+  const apiData = {
+    "username": username,
+    "password": password
+  };
+
+  let formBody = [];
+  for (const k of Object.keys(apiData)) {
+    const key = encodeURIComponent(k);
+    const value = encodeURIComponent(apiData[k]);
+    formBody.push(`${k}=${value}`);
+  }
+  formBody = formBody.join("&");
+
+  await fetch(loginURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': 'application/json',
+      'X-Requested-By': 'ThoughtSpot'
+    },
+    credentials: 'include',
+    body: formBody
+  })
+    .then(response => console.log("Logged into ThoughtSpot"))
+    .catch(error => console.error(error));
+}
 
 /**
  * Calls the ThoughtSpot logout service.
@@ -384,23 +427,23 @@ export const getSearchData = async (tsurl, worksheetId, search) => {
 }
 
 /**
- * Downloads the TML for the given pinbaord to a file.  The filename is provided by the API.
+ * Downloads the TML for the given object(s) to a file.  The filename is provided by the API.
  * @param tsurl The URL for the ThoughtSpot cluster.
- * @param pinboardIDs The GUID for the pinboard to download.
+ * @param objectIDs The GUIDs for the objects to download.
  * @param formattype Either YAML (default) or JSON.
  * @param export_associated If true, gets associated content.
  * @returns {Promise<void>}
  */
-export const downloadPinboardTML = async (tsurl, pinboardIDs,
+export const downloadTML = async (tsurl, objectIDs,
                                           formattype = 'YAML',
                                           export_associated=false) => {
 
-  console.log(`Downloading TML for ${pinboardIDs}`);
+  console.log(`Downloading TML for ${objectIDs}`);
   let downloadURL = `${cleanURL(tsurl)}/callosum/v1/tspublic/v1/metadata/tml/export`;
 
-  const getPinboardIDs = arrayify(pinboardIDs);
+  const getObjectIDs = arrayify(objectIDs);
   const apiData = {
-    "export_ids": JSON.stringify(getPinboardIDs),
+    "export_ids": JSON.stringify(getObjectIDs),
     "formattype": formattype,
     "export_associated": export_associated,
   };
@@ -427,7 +470,7 @@ export const downloadPinboardTML = async (tsurl, pinboardIDs,
       body: formBody,
     })
     .then (response => response.json().then(tmlResponse => {
-        for (const tml of tmlResponse.object) {
+        for (const tml of tmlResponse.object) {  // if you get related, then there are a bunch of files downloaded.
           const edoc = tml.edoc;
           const filename = tml.info.filename;
           console.log(`${filename}: ${edoc}`);
@@ -436,7 +479,7 @@ export const downloadPinboardTML = async (tsurl, pinboardIDs,
         }
       })
     )
-    .catch(error => console.error(`Error getting pinboard TML ${error}`));
+    .catch(error => console.error(`Error getting object TML ${error}`));
 }
 
 /**
