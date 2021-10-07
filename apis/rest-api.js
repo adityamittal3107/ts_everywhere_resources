@@ -89,6 +89,31 @@ export const tsLogout = async (tsurl) => {
 }
 
 /**
+ * Returns the session info, which includes information about the user and the cluster.
+ * @param tsurl The URL for the TS cluster.
+ * @returns {Promise<any>}  A promise with JSON that has the info.
+ */
+export const getSessionInfo = async (tsurl) => {
+  //const sessionInfoURL = cleanURL(tsurl) + "/callosum/v1/tspublic/v1/session/info";  // this will be in oct.cl
+  const sessionInfoURL = cleanURL(tsurl) + "/callosum/v1/session/info";
+
+  return await fetch(
+    sessionInfoURL, {
+      method: 'GET',
+      headers: {
+        "Accept": "application/json",
+        "X-Requested-By": "ThoughtSpot"
+      },
+      credentials: "include"
+    })
+    .then(response =>  response.json())
+    .catch(error => {
+      console.error("Unable to get the session info: " + error)
+    });
+
+}
+
+/**
  * Returns a list of pinboards that the user has access to.
  * Example:
    getPinboardList(tsurl).then(json, {
