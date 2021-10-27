@@ -92,10 +92,12 @@ export const tsLogout = async (tsurl) => {
  * Returns the session info, which includes information about the user and the cluster.
  * @param tsurl The URL for the TS cluster.
  * @returns {Promise<any>}  A promise with JSON that has the info.
+ * getSessionInfo.then(info => {
+ *   const releaseVersion = info.releaseVersion;
+ * }
  */
 export const getSessionInfo = async (tsurl) => {
-  //const sessionInfoURL = cleanURL(tsurl) + "/callosum/v1/tspublic/v1/session/info";  // this will be in oct.cl
-  const sessionInfoURL = cleanURL(tsurl) + "/callosum/v1/session/info";
+  const sessionInfoURL = cleanURL(tsurl) + "/callosum/v1/tspublic/v1/session/info";  // oct.cl 2021 and later
 
   return await fetch(
     sessionInfoURL, {
@@ -110,7 +112,6 @@ export const getSessionInfo = async (tsurl) => {
     .catch(error => {
       console.error("Unable to get the session info: " + error)
     });
-
 }
 
 /**
