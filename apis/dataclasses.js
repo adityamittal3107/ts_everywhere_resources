@@ -169,7 +169,7 @@ export class TabularData {
 
 /**
  * This class handles data from Search and Answers where the action was from the main menu or main action.
- * It does not work for pinboard visualizations or context menus.
+ * It does not work for liveboard visualizations or context menus.
  */
 export class ActionData extends TabularData {
 
@@ -226,20 +226,20 @@ export class ActionData extends TabularData {
 }
 
 /**
- * This class handles data from Pinboard visualizations where the action was from the main menu or main action.
+ * This class handles data from Liveboard visualizations where the action was from the main menu or main action.
  * It does not work for Search/Answer visualizations or context menus.
  */
-export class PinboardActionData extends TabularData {
+export class LiveboardActionData extends TabularData {
 
   /**
-   * Creates a new PinboardActionData object from JSON.  Pinboard actions pass the JSON as a string, so it has to be
+   * Creates a new LiveboardActionData object from JSON.  Liveboard actions pass the JSON as a string, so it has to be
    * converted first.
    * @param jsonData A string from the payload.data.
-   * @returns {PinboardActionData}
+   * @returns {LiveboardActionData}
    */
   static createFromJSON(jsonData) {
     jsonData = JSON.parse(jsonData);
-    const pinboardActionData = new PinboardActionData(jsonData);
+    const liveboardActionData = new LiveboardActionData(jsonData);
 
     try {
 
@@ -264,19 +264,19 @@ export class PinboardActionData extends TabularData {
         data.push(dataSet[cnt].dataValue);  // should be an array of columns values.
       }
 
-      pinboardActionData.columnNames = columnNames;
-      pinboardActionData.populateDataByColumn(data);
+      liveboardActionData.columnNames = columnNames;
+      liveboardActionData.populateDataByColumn(data);
     } catch (error) {
-      console.error(`Error creating pinboard action data: ${error}`);
+      console.error(`Error creating liveboard action data: ${error}`);
       console.error(jsonData);
     }
 
-    return pinboardActionData;
+    return liveboardActionData;
   }
 }
 
 /**
- * This class handles data from Search and Answer context actions.  It doesn't work with Answer V1 (Pinboard viz).
+ * This class handles data from Search and Answer context actions.  It doesn't work with Answer V1 (Liveboard viz).
  */
 export class ContextActionData extends TabularData {
 
@@ -317,18 +317,18 @@ export class ContextActionData extends TabularData {
 }
 
 /**
- * Represents the data from pinboard context actions.  Does not work with Search/Answer context actions.
+ * Represents the data from liveboard context actions.  Does not work with Search/Answer context actions.
  */
-export class PinboardContextActionData extends TabularData {
+export class LiveboardContextActionData extends TabularData {
 
   /**
-   * Creates a new PinboardContextActionData from the payload.
+   * Creates a new LiveboardContextActionData from the payload.
    * @param jsonData  A string from payload.data
-   * @returns {PinboardContextActionData}
+   * @returns {LiveboardContextActionData}
    */
   static createFromJSON(jsonData) {
     jsonData = JSON.parse(jsonData.data);
-    const contextActionData = new PinboardContextActionData();
+    const contextActionData = new LiveboardContextActionData();
 
     try {
 
@@ -349,7 +349,7 @@ export class PinboardContextActionData extends TabularData {
       contextActionData.columnNames = columnNames;
       contextActionData.populateDataByColumn(columnValues);
     } catch (error) {
-      console.error(`Error creating pinboard context action data: ${error}`);
+      console.error(`Error creating liveboard context action data: ${error}`);
       console.error(jsonData);
     }
 
@@ -358,7 +358,7 @@ export class PinboardContextActionData extends TabularData {
 }
 
 /**
- * Represents the individual visualizations in a pinboard.
+ * Represents the individual visualizations in a liveboard.
  */
 class VizData extends TabularData {
 
@@ -369,39 +369,39 @@ class VizData extends TabularData {
 }
 
 /**
- * Represents the pinboard data class.  This is returned when calling the pinboard data API.
+ * Represents the liveboard data class.  This is returned when calling the liveboard data API.
  */
-export class PinboardData {
+export class LiveboardData {
 
   /**
-   * Creates a new pinboard data class, which is just a collection of VizData.
+   * Creates a new liveboard data class, which is just a collection of VizData.
    */
   constructor() {
     this.vizData = {}  // Set of VizData objects keyed by the viz ID.
   }
 
   /**
-   * Creates the pinboard data object from JSON.
-   * @param jsonData The data from the pinboard data API.
-   * @returns {PinboardData}
+   * Creates the liveboard data object from JSON.
+   * @param jsonData The data from the liveboard data API.
+   * @returns {LiveboardData}
    */
   static createFromJSON(jsonData) {
-    // Creates a PinboardData object from JSON.
-    const pinboardData = new PinboardData();
+    // Creates a LiveboardData object from JSON.
+    const liveboardData = new LiveboardData();
     try {
       for (const vizId in jsonData) {
         const vizData = new VizData();
         vizData.columnNames = jsonData[vizId].columnNames;
         vizData.populateDataByRow(jsonData[vizId].data);
 
-        pinboardData.vizData[vizId] = vizData;
+        liveboardData.vizData[vizId] = vizData;
       }
     } catch (error) {
-      console.error(`Error creating pinboard data: ${error}`);
+      console.error(`Error creating liveboard data: ${error}`);
       console.error(jsonData);
     }
 
-    return pinboardData;
+    return liveboardData;
   }
 }
 

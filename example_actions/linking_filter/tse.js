@@ -12,7 +12,7 @@ import {
   RuntimeFilterOp,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
-import { PinboardContextActionData } from "./dataclasses.js";
+import { PinboardContextActionData } from "../../apis/dataclasses.js";
 
 const tsURL = "https://try.thoughtspot.cloud/";  // Set to the URL for your system.
 

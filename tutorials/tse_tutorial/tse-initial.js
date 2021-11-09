@@ -72,12 +72,12 @@ const onSearch = () => {
   alert("Search not embedded");
 }
 
-const onPinboard = () => {
+const onLiveboard = () => {
 
   showMainApp();
 
-  // TODO replace the alert with the proper embed a pinboard.
-  alert("Pinboard not embedded");
+  // TODO replace the alert with the proper embed a liveboard.
+  alert("Liveboard not embedded");
 }
 
 const onVisualization = () => {
@@ -95,7 +95,7 @@ const onFull = () => {
   alert("Full application not embedded");
 }
 
-export { onLogin, onFull, onSearch, onPinboard, onVisualization };
+export { onLogin, onFull, onSearch, onLiveboard, onVisualization };
 
 // Show the URL to connect to.
 document.getElementById('ts-url').innerText = 'ThoughtSpot Server: ' + tsURL;
@@ -106,12 +106,12 @@ document.getElementById('close-modal').addEventListener('click', closeModal);
 
 // Events for buttons
 document.getElementById('search-button').addEventListener('click', onSearch);
-document.getElementById('pinboard-button').addEventListener('click', onPinboard);
+document.getElementById('liveboard-button').addEventListener('click', onLiveboard);
 document.getElementById('viz-button').addEventListener('click', onVisualization);
 document.getElementById('full-app-button').addEventListener('click', onFull);
 
 // Events for nav bar
 document.getElementById('search-link').addEventListener('click', onSearch);
-document.getElementById('pinboard-link').addEventListener('click', onPinboard);
+document.getElementById('liveboard-link').addEventListener('click', onLiveboard);
 document.getElementById('visualization-link').addEventListener('click', onVisualization);
 document.getElementById('full-application-link').addEventListener('click', onFull);

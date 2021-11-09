@@ -1,5 +1,7 @@
 /*
- * This is the script to update for the ThoughtSpot Everywhere tutorial.
+ * The completed script for the ThoughtSpot Everywhere tutorial.  Your solution should look similar.
+ * It's recommended to refer to the documentation and Developer Playground to try to get it working before
+ * using this file.
  */
 import {ActionData, tabularDataToHTML} from "./dataclasses.js";
 
@@ -39,7 +41,21 @@ const closeModal = () => {
 }
 
 const showData = (payload) => {
-  // TODO - add code to handle the custom action callback.
+  const data = payload.data;
+  if (data.id === 'show-data') {
+    // For either action, simply display the data as a table.
+    const actionData = ActionData.createFromJSON(payload);
+    
+    const html = tabularDataToHTML(actionData);
+    const dataContentElement = document.getElementById('modal-data-content');
+    dataContentElement.innerHTML = html;
+
+    const dataElement = document.getElementById('show-data');
+    dataElement.style.display = 'block';
+  }
+  else {
+    console.log(`Got unknown custom actions ${data.id}`);
+  }
 }
 
 // Create and manage the login screen.
@@ -49,7 +65,10 @@ const onLogin = () => {
   //const username = document.getElementById('username').value;
   //const password = document.getElementById('password').value;
 
-  // TODO - add code to initialize the connection to ThoughtSpot
+  init({
+    thoughtSpotHost: tsURL,
+    authType: AuthType.None,
+  });
 
   hideDiv('login');
   showDiv('landing-page');
@@ -68,34 +87,69 @@ const showMainApp = () => {
 const onSearch = () => {
   showMainApp();
 
-  // TODO replace the alert and return with the proper code to embed search.
-  alert("Search not embedded");
+  const embed = new SearchEmbed('#embed', {
+    frameParams: {},
+    collapseDataSources: false,
+    hideResults: false,
+    disabledActions: [Action.SpotIQAnalyze],
+    disabledActionReason: 'Enterprise feature.',
+    hiddenActions: [Action.Download, Action.Share, Action.DownloadAsCsv],
+    hideDataSources: false,
+  });
+
+  embed
+    .on(EmbedEvent.CustomAction, (payload) => {
+        showData(payload);
+    })
+    .render();
 }
 
-const onPinboard = () => {
-
+const onLiveboard = () => {
   showMainApp();
 
-  // TODO replace the alert with the proper embed a pinboard.
-  alert("Pinboard not embedded");
+  const embed = new PinboardEmbed("#embed", {
+      frameParams: {},
+      pinboardId: "d084c256-e284-4fc4-b80c-111cb606449a",  // TODO - set to your liveboard ID.
+      disabledActions: [Action.DownloadAsPdf],
+      disabledActionReason: 'Enterprise feature.',
+      hiddenActions: [Action.LiveboardInfo]
+  });
+
+  embed.render();
 }
 
 const onVisualization = () => {
   showMainApp();
 
-  // TODO replace the alert with the proper code to embed a visualization.
-  alert("Visualization not embedded");
+  const embed = new PinboardEmbed('#embed', {
+    frameParams: {height: "50vw"},
+    pinboardId: 'd084c256-e284-4fc4-b80c-111cb606449a',  // TODO - set to your liveboard ID.
+    vizId: '856edeb8-2c86-4697-8bfb-c4dcee3a679a',       // TODO - set to your visualization ID.
+    disabledActions: [Action.Download],
+    disabledActionReason: 'Enterprise feature.',
+    hiddenActions: [Action.SpotIQAnalyze]
+  });
+
+  embed.render();
 }
 
 // Embed the full application.
 const onFull = () => {
   showMainApp();
 
-  // TODO replace the alert with the proper code the full application.
-  alert("Full application not embedded");
+  const embed = new AppEmbed('#embed', {
+    frameParams: {},
+    showPrimaryNavbar: false,  // set to true to show the ThoughtSpot navbar
+    pageId: Page.Home, // loads the Home tab, but you can start on any main tab - try Page.Search
+    disabledActions: [], // list of any actions you don't want the users to use, but still see
+    disabledActionReason: 'No sharing allowed.', // tool tip the user will see
+    hiddenActions: [] // totally hide a feature from a user
+  });
+
+  embed.render();
 }
 
-export { onLogin, onFull, onSearch, onPinboard, onVisualization };
+export { onLogin, onFull, onSearch, onLiveboard, onVisualization };
 
 // Show the URL to connect to.
 document.getElementById('ts-url').innerText = 'ThoughtSpot Server: ' + tsURL;
@@ -106,12 +160,12 @@ document.getElementById('close-modal').addEventListener('click', closeModal);
 
 // Events for buttons
 document.getElementById('search-button').addEventListener('click', onSearch);
-document.getElementById('pinboard-button').addEventListener('click', onPinboard);
+document.getElementById('liveboard-button').addEventListener('click', onLiveboard);
 document.getElementById('viz-button').addEventListener('click', onVisualization);
 document.getElementById('full-app-button').addEventListener('click', onFull);
 
 // Events for nav bar
 document.getElementById('search-link').addEventListener('click', onSearch);
-document.getElementById('pinboard-link').addEventListener('click', onPinboard);
+document.getElementById('liveboard-link').addEventListener('click', onLiveboard);
 document.getElementById('visualization-link').addEventListener('click', onVisualization);
 document.getElementById('full-application-link').addEventListener('click', onFull);

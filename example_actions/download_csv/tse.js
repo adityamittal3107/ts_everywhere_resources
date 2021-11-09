@@ -11,7 +11,7 @@ import {
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
 // You need to download dataclasses from the /api folder.
-import { ActionData, tabularDataToCSV } from "./dataclasses.js";
+import { ActionData, tabularDataToCSV } from "../../apis/dataclasses.js";
 
 const tsURL = "https://try.thoughtspot.cloud/";  // Set to the URL for your system.
 

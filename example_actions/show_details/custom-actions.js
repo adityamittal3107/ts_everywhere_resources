@@ -3,7 +3,7 @@
  */
 import {
   PinboardContextActionData
-} from "./dataclasses.js";
+} from "../../apis/dataclasses.js";
 
 import {
   PinboardEmbed,
