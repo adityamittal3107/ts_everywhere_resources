@@ -66,4 +66,6 @@ const embedPinboard = () => {
 
 }
 
+document.getElementById('thoughtspot-server').innerHTML = `ThoughtSpot Server: ${tsURL}`;
+
 window.onload = embed;

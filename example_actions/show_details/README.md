@@ -6,7 +6,7 @@ This example shows how to use a custom action in a context menu to show a pre-de
 
 For this example, you'll need a custom action to add to the pinboard.  In this example, the action is called 'show-more' and is configured as shown in the image.  This action is set to be on the context menu and not be added globally.
 
-![Custom action configuration](ca_custom_action.png)
+![Custom action configuration](images/ca_custom_action.png)
 
 If you use a different id, you'll need to change the code:
 
@@ -18,12 +18,12 @@ Create a pinboard to use for the main visualization and the details.  By creatin
 
 The following pinboard contains a map of US States with sales.  There is also a pin that shows top sales.  The map is going to be the main visualization and then the sales column chart is the detail.
 
-![Map of sales](ca_pinboard.png)
+![Map of sales](images/ca_pinboard.png)
 
 When you embed the map visualization, you can then click on the `show-details` link and the details will pop up as seen in the next two images.
 
-![Map with context link](ca_selection.png)
-![Pop-up of details](ca_popup.png)
+![Map with context link](images/ca_selection.png)
+![Pop-up of details](images/ca_popup.png)
 
 ## Solution
 
