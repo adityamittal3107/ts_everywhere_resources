@@ -109,7 +109,7 @@ const onLiveboard = () => {
 
   const embed = new PinboardEmbed("#embed", {
       frameParams: {},
-      liveboardId: '2ba03345-d20f-4a10-9509-6e13bbb2e32a',  // TODO - set to your liveboard ID.
+      pinboardId: "d084c256-e284-4fc4-b80c-111cb606449a",  // TODO - set to your liveboard ID.
       disabledActions: [Action.DownloadAsPdf],
       disabledActionReason: 'Enterprise feature.',
       hiddenActions: [Action.LiveboardInfo]
@@ -122,9 +122,9 @@ const onVisualization = () => {
   showMainApp();
 
   const embed = new PinboardEmbed('#embed', {
-    frameParams: {},
-    liveboardId: '2ba03345-d20f-4a10-9509-6e13bbb2e32a',  // TODO - set to your liveboard ID.
-    vizId: 'e2387c53-b83a-43be-84cd-ebb6292c216b',       // TODO - set to your visualization ID.
+    frameParams: {height: "50vw"},
+    pinboardId: "d084c256-e284-4fc4-b80c-111cb606449a",  // TODO - set to your liveboard ID.
+     vizId: "c23bd3da-6975-4d7c-b1f3-5803f94ce7d2",      // TODO - set to your visualization ID.
     disabledActions: [Action.Download],
     disabledActionReason: 'Enterprise feature.',
     hiddenActions: [Action.SpotIQAnalyze]
