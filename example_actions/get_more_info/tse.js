@@ -9,11 +9,11 @@ import {
 import {
   ActionData,
   SearchData
-} from "./dataclasses.js";
+} from "../../apis/dataclasses.js";
 
 import {
   getSearchData
-} from "./rest-api.js";
+} from "../../apis/rest-api.js";
 
 // const tsURL = "https://try.thoughtspot.cloud";
 const tsURL = "https://embed-1-do-not-delete.thoughtspotdev.cloud";

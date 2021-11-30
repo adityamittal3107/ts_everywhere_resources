@@ -15,7 +15,23 @@ h1 {
   color: white;
 }
 
-#embed {
+#full-embed {
+  display: block;
   height: 100%;
   width: 100%;
+  background-color: #EAEDF2;
+}
+
+.embed-container {
+  display: flex;
+  flex-flow: row wrap;
+  height: 100%;
+  width: 100%;
+  background-color: #EAEDF2;
+}
+
+.embed {
+  height: 50%;
+  width: 48%;
+  padding: 10px;
 }

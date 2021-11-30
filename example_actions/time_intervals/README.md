@@ -2,13 +2,13 @@
 
 This example shows how you can add the ability to select different time intervals for embedded visualizations.  ThoughtSpot runtime filters only allow you to specify dates, not different intervals.  This example solves the problem by using a pinboard with multiple visualizations at different time intervals.  Then the user selects the time interval from a dropdown, which causes the time interval to be updated.
 
-![Weekly view of sales](weekly-view.png)
+![Weekly view of sales](images/weekly-view.png)
 
 ## Setup
 
 First, create a pinboard with visualizations at different time intervals like the one shown.
 
-![Pinboard with visualizations](./pinboard.png)
+![Pinboard with visualizations](images/pinboard.png)
 
 Next, update the visualization IDs in the `<select>` options in `index.html`, e.g.
 

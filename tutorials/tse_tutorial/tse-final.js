@@ -104,15 +104,15 @@ const onSearch = () => {
     .render();
 }
 
-const onPinboard = () => {
+const onLiveboard = () => {
   showMainApp();
 
   const embed = new PinboardEmbed("#embed", {
       frameParams: {},
-      pinboardId: '2ba03345-d20f-4a10-9509-6e13bbb2e32a',  // TODO - set to your pinboard ID.
+      pinboardId: "d084c256-e284-4fc4-b80c-111cb606449a",  // TODO - set to your liveboard ID.
       disabledActions: [Action.DownloadAsPdf],
       disabledActionReason: 'Enterprise feature.',
-      hiddenActions: [Action.PinboardInfo]
+      hiddenActions: [Action.LiveboardInfo]
   });
 
   embed.render();
@@ -122,9 +122,9 @@ const onVisualization = () => {
   showMainApp();
 
   const embed = new PinboardEmbed('#embed', {
-    frameParams: {},
-    pinboardId: '2ba03345-d20f-4a10-9509-6e13bbb2e32a',  // TODO - set to your pinboard ID.
-    vizId: 'e2387c53-b83a-43be-84cd-ebb6292c216b',       // TODO - set to your visualization ID.
+    frameParams: {height: "50vw"},
+    pinboardId: "d084c256-e284-4fc4-b80c-111cb606449a",  // TODO - set to your liveboard ID.
+     vizId: "c23bd3da-6975-4d7c-b1f3-5803f94ce7d2",      // TODO - set to your visualization ID.
     disabledActions: [Action.Download],
     disabledActionReason: 'Enterprise feature.',
     hiddenActions: [Action.SpotIQAnalyze]
@@ -149,7 +149,7 @@ const onFull = () => {
   embed.render();
 }
 
-export { onLogin, onFull, onSearch, onPinboard, onVisualization };
+export { onLogin, onFull, onSearch, onLiveboard, onVisualization };
 
 // Show the URL to connect to.
 document.getElementById('ts-url').innerText = 'ThoughtSpot Server: ' + tsURL;
@@ -160,12 +160,12 @@ document.getElementById('close-modal').addEventListener('click', closeModal);
 
 // Events for buttons
 document.getElementById('search-button').addEventListener('click', onSearch);
-document.getElementById('pinboard-button').addEventListener('click', onPinboard);
+document.getElementById('liveboard-button').addEventListener('click', onLiveboard);
 document.getElementById('viz-button').addEventListener('click', onVisualization);
 document.getElementById('full-app-button').addEventListener('click', onFull);
 
 // Events for nav bar
 document.getElementById('search-link').addEventListener('click', onSearch);
-document.getElementById('pinboard-link').addEventListener('click', onPinboard);
+document.getElementById('liveboard-link').addEventListener('click', onLiveboard);
 document.getElementById('visualization-link').addEventListener('click', onVisualization);
 document.getElementById('full-application-link').addEventListener('click', onFull);

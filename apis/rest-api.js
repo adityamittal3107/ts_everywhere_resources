@@ -115,22 +115,22 @@ export const getSessionInfo = async (tsurl) => {
 }
 
 /**
- * Returns a list of pinboards that the user has access to.
+ * Returns a list of liveboards that the user has access to.
  * Example:
-   getPinboardList(tsurl).then(json, {
+   getLiveboardList(tsurl).then(json, {
      // do something with the list.
    });
  * @param tsurl The URL for the ThoughtSpot cluster.
  * @returns {Promise<any>}  A promise with the list.
  */
-export const getPinboardList = async (tsurl) => {
-  // Returns the list of pinboards so the user can display them.
-  const pinboardMetadataListURL = cleanURL(tsurl) + "/callosum/v1/tspublic/v1/metadata/listobjectheaders?" +
+export const getLiveboardList = async (tsurl) => {
+  // Returns the list of liveboards so the user can display them.
+  const liveboardMetadataListURL = cleanURL(tsurl) + "/callosum/v1/tspublic/v1/metadata/listobjectheaders?" +
     "type=PINBOARD_ANSWER_BOOK" +
     "&batchsize=-1";
 
   return await fetch(
-    pinboardMetadataListURL, {
+    liveboardMetadataListURL, {
       method: 'GET',
       headers: {
         "Accept": "application/json",
@@ -141,47 +141,47 @@ export const getPinboardList = async (tsurl) => {
     .then(response =>  response.json())
     .then(data => data)
     .catch(error => {
-      console.error("Unable to get the pinboard list: " + error)
+      console.error("Unable to get the liveboard list: " + error)
     });
 }
 
 /**
- * Returns a list of GUIDs for a pinboard with a given name or an empty list if not found.
+ * Returns a list of GUIDs for a liveboard with a given name or an empty list if not found.
  * Example:
- * getPinboardGUIDs('<tsurl>', '<pinboard-name>').then (pinboardGUIDs => {
+ * getLiveboardGUIDs('<tsurl>', '<liveboard-name>').then (liveboardGUIDs => {
  *     // use the list.
  * });
  * @param tsurl URL for the ThoughtSpot cluster.
- * @param pinboardName Name of the pinboard to match.
+ * @param liveboardName Name of the liveboard to match.
  * @returns str[] A list of GUIDs (or empty list).
  */
-export const getPinboardGUIDs = async (tsurl, pinboardName) => {
+export const getLiveboardGUIDs = async (tsurl, liveboardName) => {
 
-    console.log(`Getting pinboard GUIDs from ${tsurl}`)
-    const pinboardGUIDs = [];
-    await getPinboardList(tsurl).then(pinboards => {
-        for (let idx = 0; idx < pinboards.length; idx++) {
-          if (pinboards[idx].name === pinboardName) {
-            pinboardGUIDs.push(pinboards[idx].id);
+    console.log(`Getting liveboard GUIDs from ${tsurl}`)
+    const liveboardGUIDs = [];
+    await getLiveboardList(tsurl).then(liveboards => {
+        for (let idx = 0; idx < liveboards.length; idx++) {
+          if (liveboards[idx].name === liveboardName) {
+            liveboardGUIDs.push(liveboards[idx].id);
           }
         }
     });
-    console.log(`got pinboard IDs [${pinboardGUIDs}]`)
-    return pinboardGUIDs;
+    console.log(`got liveboard IDs [${liveboardGUIDs}]`)
+    return liveboardGUIDs;
 }
 
 /**
- * Returns a promise with the list of visualizations for the given pinboard.
+ * Returns a promise with the list of visualizations for the given liveboard.
  * Example:
-    getVisualizationList(tsurl, pinboardId).then(vizzes => {
+    getVisualizationList(tsurl, liveboardId).then(vizzes => {
       // do something with the list of visualizations.
     });
  * @param tsurl The URL for the ThoughtSpot cluster.
- * @param pinboardId The GUID for the pinboard to get visualizations for.
+ * @param liveboardId The GUID for the liveboard to get visualizations for.
  * @returns {Promise<any>}
  */
-export const getVisualizationList = async (tsurl, pinboardId) => {
-  const vizMetadataListURL = cleanURL(tsurl) + "/callosum/v1/tspublic/v1/metadata/listvizheaders?id=" + pinboardId;
+export const getVisualizationList = async (tsurl, liveboardId) => {
+  const vizMetadataListURL = cleanURL(tsurl) + "/callosum/v1/tspublic/v1/metadata/listvizheaders?id=" + liveboardId;
 
   return await fetch(
     vizMetadataListURL, {
@@ -195,26 +195,26 @@ export const getVisualizationList = async (tsurl, pinboardId) => {
     .then(response =>  response.json())
     .then(data => data)
     .catch(error => {
-      console.error("Unable to get the visualization list for pinboard " + pinboardId + ": " + error)
+      console.error("Unable to get the visualization list for liveboard " + liveboardId + ": " + error)
     });
 }
 
 /**
- * Returns a list of GUIDs for a pinboard visualization with a given name or an empty list if not found.
+ * Returns a list of GUIDs for a liveboard visualization with a given name or an empty list if not found.
  * Example:
- * getPinboardVizGUIDs('<tsurl>', '<pinboardGUID>', '<vizName>').then (vizGUIDs => {
+ * getLiveboardVizGUIDs('<tsurl>', '<liveboardGUID>', '<vizName>').then (vizGUIDs => {
  *     // use the list.
  * });
  * @param tsurl URL for the ThoughtSpot cluster.
- * @param pinboardGUID The GUID for the pinboard.
+ * @param liveboardGUID The GUID for the liveboard.
  * @param vizName Name of the visualization to match.
  * @returns str[] A list of GUIDs (or empty list).
  */
-export const getPinboardVizGUIDs = async (tsurl, pinboardGUID, vizName) => {
+export const getLiveboardVizGUIDs = async (tsurl, liveboardGUID, vizName) => {
 
-  console.log(`Getting viz GUIDs from ${tsurl} for viz ${pinboardGUID}::${vizName}`);
+  console.log(`Getting viz GUIDs from ${tsurl} for viz ${liveboardGUID}::${vizName}`);
   const vizGUIDs = [];
-  await getVisualizationList(tsurl, pinboardGUID).then(vizList => {
+  await getVisualizationList(tsurl, liveboardGUID).then(vizList => {
     for (let idx = 0; idx < vizList.length; idx++) {
       if (vizList[idx].name === vizName) {
         vizGUIDs.push(vizList[idx].id);
@@ -228,7 +228,7 @@ export const getPinboardVizGUIDs = async (tsurl, pinboardGUID, vizName) => {
 /**
  * Returns an array of worksheet metadata objects.
  * Example:
- * getPinboardVizGUIDs('<tsurl>').then (worksheets => {
+ * getLiveboardVizGUIDs('<tsurl>').then (worksheets => {
  *     // use the list.
  * });
  * @param tsurl URL to ThoughtSpot.
@@ -258,9 +258,9 @@ export const getWorksheetList = async (tsurl) => {
 }
 
 /**
- * Returns a list of GUIDs for a pinboard visualization with a given name or an empty list if not found.
+ * Returns a list of GUIDs for a liveboard visualization with a given name or an empty list if not found.
  * Example:
- * getPinboardVizGUIDs('<tsurl>', '<pinboardGUID>', '<vizName>').then (vizGUIDs => {
+ * getLiveboardVizGUIDs('<tsurl>', '<liveboardGUID>', '<vizName>').then (vizGUIDs => {
  *     // use the list.
  * });
  * @param tsurl URL for the ThoughtSpot cluster.
@@ -283,26 +283,26 @@ export const getWorksheetGUIDs = async (tsurl, worksheetName) => {
 }
 
 /**
- * Returns the data object for the pinboard and all of the vizualizations specified, or all if not specified.
+ * Returns the data object for the liveboard and all of the vizualizations specified, or all if not specified.
  * Currently returns a JSON object as defined in
  * https://docs.thoughtspot.com/latest/app-integrate/reference/pinboarddata.html
  * Example:
-     getPinboardData(tsurl, pinboardId, vizId).then((response) => {
-       const pinboardData = PinboardData.createFromJSON(response);
-       const firstVizId = Object.keys(pinboardData.vizData)[0];
-       const html = tabularDataToHTML(pinboardData.vizData[firstVizId]);
+     getLiveboardData(tsurl, liveboardId, vizId).then((response) => {
+       const liveboardData = LiveboardData.createFromJSON(response);
+       const firstVizId = Object.keys(liveboardData.vizData)[0];
+       const html = tabularDataToHTML(liveboardData.vizData[firstVizId]);
        // display the table in the application.
      });
  * @param tsurl The URL for the ThoughtSpot cluster.
- * @param pinboardId The GUID for the pinboard to get data for.
+ * @param liveboardId The GUID for the liveboard to get data for.
  * @param vizIds Optional GUIDs to only get certain visualizations.  String or array.
  * @param filters Optional runtime filters.  This is an array of objects like
  * [ { columnName: "colname", operator: "eq", values: "values" }, ...] the values can be a string or array.
  * @returns {Promise<any|void>} A promise that will return the data in JSON form.
  */
-export const getPinboardData = async (tsurl, pinboardId, vizIds, filters) => {
-  console.log(`Getting data from pinboard ${pinboardId} and visualization(s) ${vizIds}`)
-  let getPinboardDataURL = `${cleanURL(tsurl)}/callosum/v1/tspublic/v1/pinboarddata?batchSize=-1&id=${pinboardId}`;
+export const getLiveboardData = async (tsurl, liveboardId, vizIds, filters) => {
+  console.log(`Getting data from liveboard ${liveboardId} and visualization(s) ${vizIds}`)
+  let getLiveboardDataURL = `${cleanURL(tsurl)}/callosum/v1/tspublic/v1/pinboarddata?batchSize=-1&id=${liveboardId}`;
 
   if (vizIds) { // if vizIds were specified, they are optional
     if (! (Array.isArray(vizIds))) { // assume is a string and convert to an array.
@@ -311,27 +311,27 @@ export const getPinboardData = async (tsurl, pinboardId, vizIds, filters) => {
 
     // TODO add handling for invalid types.  Currently only support string and array.
     const formattedVizIds = `["${vizIds.join('","')}"]`;
-    getPinboardDataURL += '&vizid=' + formattedVizIds;
+    getLiveboardDataURL += '&vizid=' + formattedVizIds;
   }
 
   if (filters) {
     let count = 1;
     for (const f of filters) { // { columnName, operator, values }
-      getPinboardDataURL += `&col${count}=${f.columnName}&op${count}=${f.operator}`;
+      getLiveboardDataURL += `&col${count}=${f.columnName}&op${count}=${f.operator}`;
       if (Array.isArray(f.values)) {
         for (const v of f.values) {
-          getPinboardDataURL += `&val${count}=${v}`;
+          getLiveboardDataURL += `&val${count}=${v}`;
         }
       }
       else {
-        getPinboardDataURL += `&val${count}=${f.values}`;
+        getLiveboardDataURL += `&val${count}=${f.values}`;
       }
       count++;
     }
   }
 
   return await fetch(
-    encodeURI(getPinboardDataURL), {
+    encodeURI(getLiveboardDataURL), {
       method: 'POST',
       headers: {
         "Accept": "application/json",
@@ -342,7 +342,7 @@ export const getPinboardData = async (tsurl, pinboardId, vizIds, filters) => {
     .then(response =>  response.json())
     .then(data => data)
     .catch(error => {
-      console.error(`Unable to get the visualization list for pinboard ${pinboardId}: ${error}`);
+      console.error(`Unable to get the visualization list for liveboard ${liveboardId}: ${error}`);
     });
 }
 
@@ -379,12 +379,12 @@ export const getSearchData = async (tsurl, worksheetId, search) => {
 }
 
 /**
- * Downloads a list of pinboard visualizations as PDF.  If the vizIDs aren't provided, then downloads the
- * pinboard.
+ * Downloads a list of liveboard visualizations as PDF.  If the vizIDs aren't provided, then downloads the
+ * liveboard.
  * Example:
  * TODO - add an example of the call.
  * @param tsurl The URL for the ThoughtSpot cluster.
- * @param pinboard The GUID for the pinboard to download or the transient content.
+ * @param liveboard The GUID for the liveboard to download or the transient content.
  * @param options Object with additional properties:
  *   - visualization_ids: if provided will only download specific visualizations.
  *   - layout_type: PINBOARD (default) or VISUALISATION.  If visualization IDs are provided, will only do VISUALISATION.
@@ -397,7 +397,7 @@ export const getSearchData = async (tsurl, worksheetId, search) => {
  *   - include_filter_page true (default) or false.  If true, a page of current filters is shown.
  * @returns {Promise<any|void>} A promise that will return the data in JSON form.
  */
- export const downloadPinboardPDF = async (tsurl, pinboard, options ) => {
+ export const downloadLiveboardPDF = async (tsurl, liveboard, options ) => {
   let downloadURL = `${cleanURL(tsurl)}/callosum/v1/tspublic/v1/export/pinboard/pdf`;
 
   // Create a new FormData object with the passed in options.
@@ -409,12 +409,12 @@ export const getSearchData = async (tsurl, worksheetId, search) => {
   }
 
   // TODO - figure out how to distinguish between transient data and a GUID.  Length?
-  console.log(pinboard);
-  if (pinboard.length < 40) {
-    apiData.set("id", pinboard);
+  console.log(liveboard);
+  if (liveboard.length < 40) {
+    apiData.set("id", liveboard);
   }
   else {
-    apiData.set("transient_data", pinboard);  // TODO test with transient data and see if there is a better option.
+    apiData.set("transient_data", liveboard);  // TODO test with transient data and see if there is a better option.
   }
 
   let layout_type = options.layout_type;
@@ -446,7 +446,7 @@ export const getSearchData = async (tsurl, worksheetId, search) => {
     })
     .then(response => {
       response.blob().then(blob => {
-        downloadBlobToFile(blob, pinboard + ".pdf");
+        downloadBlobToFile(blob, liveboard + ".pdf");
       })
     })
     .catch(error => console.error(error));

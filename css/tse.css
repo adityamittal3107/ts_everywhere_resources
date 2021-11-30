@@ -1,3 +1,8 @@
+html, body{
+  height: 100%;
+  width: 100%;
+}
+
 body {
   font-family: Optimo-Plain,Helvetica Neue,Helvetica,Arial,sans-serif;
   text-after-overflow: center;
@@ -6,15 +11,13 @@ body {
 }
 
 h1 {
-  text-align: center;
+  background-color: rgb(28,78,169);
+  color: white;
 }
 
 #embed {
-  margin-left: 0;
-  display: block;
-  width: 100vw;
-  height: 80vw;
-  background-color: #EAEDF2;
+  height: 100%;
+  width: 100%;
 }
 
 /* Modal (background) */
