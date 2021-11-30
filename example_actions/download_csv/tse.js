@@ -55,9 +55,9 @@ const embedSearch = () => {
   .on(EmbedEvent.CustomAction, (payload) => {
     // The id is defined when creating the Custom Action in ThoughtSpot.
     // Checking id attribute allows correct routing of multiple Custom Actions
-    //if (payload.data.id === 'download-csv') {
+    if (payload.data.id === 'download-csv') {
       downloadCSV(payload);
-    //}
+    }
   })
   .render();
 }
