@@ -3,7 +3,7 @@
  * It's recommended to refer to the documentation and Developer Playground to try to get it working before
  * using this file.
  */
-import {ActionData, tabularDataToHTML} from "./dataclasses.js";
+import {showPayload, closeModal} from "./custom-actions.js";
 
 import {
   init,
@@ -17,49 +17,11 @@ import {
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
 // TODO - set the following for your URL.
-const tsURL = "https://try.thoughtspot.cloud";
+const tsURL = "https://training.thoughtspot.cloud";
 
-// functions to show and hide div sections.
-const showDiv = divId => {
-  const div = document.getElementById(divId);
-  div.style.display = 'flex';
-}
-
-const hideDiv = divId => {
-  const div = document.getElementById(divId);
-  div.style.display = 'none';
-}
-
-const clearEmbed = () => {
-  const div = document.getElementById("embed");
-  div.innerHTML = "";
-}
-
-const closeModal = () => {
-  const showDataElement = document.getElementById("show-data")
-  showDataElement.style.display = "none";  // hide the box.
-}
-
-const showData = (payload) => {
-  const data = payload.data;
-  if (data.id === 'show-data') {
-    // For either action, simply display the data as a table.
-    const actionData = ActionData.createFromJSON(payload);
-    
-    const html = tabularDataToHTML(actionData);
-    const dataContentElement = document.getElementById('modal-data-content');
-    dataContentElement.innerHTML = html;
-
-    const dataElement = document.getElementById('show-data');
-    dataElement.style.display = 'block';
-  }
-  else {
-    console.log(`Got unknown custom actions ${data.id}`);
-  }
-}
+//------------------------------ Set up TS and authenticate and show app. ----------------------------
 
 // Create and manage the login screen.
-
 const onLogin = () => {
   // The following can be used if you want to use AuthType.Basic
   //const username = document.getElementById('username').value;
@@ -82,24 +44,27 @@ const showMainApp = () => {
   showDiv('main-app');
 }
 
-// Functions to embed the content based on user selection.
+//----------------------------------- Functions to embed content . -----------------------------------
 
 const onSearch = () => {
   showMainApp();
 
-  const embed = new SearchEmbed('#embed', {
+  const embed = new SearchEmbed("#embed", {
     frameParams: {},
-    collapseDataSources: false,
-    hideResults: false,
-    disabledActions: [Action.SpotIQAnalyze],
-    disabledActionReason: 'Enterprise feature.',
-    hiddenActions: [Action.Download, Action.Share, Action.DownloadAsCsv],
-    hideDataSources: false,
+    collapseDataSources: true,
+    disabledActions: [Action.Download, Action.DownloadAsCsv],
+    disabledActionReason: "Enterprise feature",
+    hiddenActions: [Action.Share],
+    dataSources: ["1b1c237d-9de8-4542-bf1f-0c3157ddb8d2"],
+    searchOptions: {
+      searchTokenString: '[sales] [product type]',
+      executeSearch: true,
+    },
   });
 
   embed
-    .on(EmbedEvent.CustomAction, (payload) => {
-        showData(payload);
+    .on(EmbedEvent.CustomAction, payload => {  // shows the payload for any custom action.
+        showPayload(payload);
     })
     .render();
 }
@@ -121,13 +86,10 @@ const onLiveboard = () => {
 const onVisualization = () => {
   showMainApp();
 
-  const embed = new PinboardEmbed('#embed', {
-    frameParams: {height: "50vw"},
-    pinboardId: "d084c256-e284-4fc4-b80c-111cb606449a",  // TODO - set to your liveboard ID.
-     vizId: "c23bd3da-6975-4d7c-b1f3-5803f94ce7d2",      // TODO - set to your visualization ID.
-    disabledActions: [Action.Download],
-    disabledActionReason: 'Enterprise feature.',
-    hiddenActions: [Action.SpotIQAnalyze]
+  const embed = new PinboardEmbed("#embed", {
+    frameParams: {},
+    pinboardId: "9c3d26af-cf1b-4e89-aa42-f60d34983827",
+     vizId: "9564b208-39b9-4349-9f06-3c989a9e1863",
   });
 
   embed.render();
@@ -149,7 +111,26 @@ const onFull = () => {
   embed.render();
 }
 
-export { onLogin, onFull, onSearch, onLiveboard, onVisualization };
+//----------------------------------- Functions to manage the UI. -----------------------------------
+
+// functions to show and hide parts of the UI.
+const showDiv = divId => {
+  const div = document.getElementById(divId);
+  div.style.display = 'flex';
+}
+
+const hideDiv = divId => {
+  const div = document.getElementById(divId);
+  div.style.display = 'none';
+}
+
+// Clears the embedded section.
+const clearEmbed = () => {
+  const div = document.getElementById("embed");
+  div.innerHTML = "";
+}
+
+//---------------------------- connect UI to code and start the app. ----------------------------
 
 // Show the URL to connect to.
 document.getElementById('ts-url').innerText = 'ThoughtSpot Server: ' + tsURL;
