@@ -88,8 +88,8 @@ const onVisualization = () => {
 
   const embed = new LiveboardEmbed("#embed", {
     frameParams: {},
-    pinboardId: "9c3d26af-cf1b-4e89-aa42-f60d34983827",
-     vizId: "9564b208-39b9-4349-9f06-3c989a9e1863",
+    liveboardId: "9c3d26af-cf1b-4e89-aa42-f60d34983827",
+    vizId: "9564b208-39b9-4349-9f06-3c989a9e1863",
   });
 
   embed.render();
