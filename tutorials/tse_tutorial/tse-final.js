@@ -12,7 +12,7 @@ import {
   AuthType,
   EmbedEvent,
   Page,
-  PinboardEmbed,
+  LiveboardEmbed,
   SearchEmbed,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
@@ -72,7 +72,7 @@ const onSearch = () => {
 const onLiveboard = () => {
   showMainApp();
 
-  const embed = new PinboardEmbed("#embed", {
+  const embed = new LiveboardEmbed("#embed", {
       frameParams: {},
       pinboardId: "d084c256-e284-4fc4-b80c-111cb606449a",  // TODO - set to your liveboard ID.
       disabledActions: [Action.DownloadAsPdf],
@@ -86,7 +86,7 @@ const onLiveboard = () => {
 const onVisualization = () => {
   showMainApp();
 
-  const embed = new PinboardEmbed("#embed", {
+  const embed = new LiveboardEmbed("#embed", {
     frameParams: {},
     pinboardId: "9c3d26af-cf1b-4e89-aa42-f60d34983827",
      vizId: "9564b208-39b9-4349-9f06-3c989a9e1863",

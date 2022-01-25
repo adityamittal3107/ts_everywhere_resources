@@ -6,7 +6,7 @@ import {
 } from "/apis/dataclasses.js";
 
 import {
-  PinboardEmbed,
+  LiveboardEmbed,
   RuntimeFilterOp,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
@@ -20,7 +20,7 @@ const showPayload = (payload) => {
   // Only gets the first column value.
   const filter = liveboardContextData.data[liveboardContextData.columnNames[0]];
   // Now show the details with the filter applied in a popup.
-  const embed = new PinboardEmbed("#embed-popup", {
+  const embed = new LiveboardEmbed("#embed-popup", {
     frameParams: { width: "80vw", height: "60vw" },
     disabledActions: [],
     disabledActionReason: "Reason for disabling",

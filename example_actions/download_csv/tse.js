@@ -1,6 +1,6 @@
 /*
 This example shows how to embed use a custom action to download data as a CSV file.  This example only works with
-main actions in Search and Answers.  It will not work in Context Actions or Pinboard Actions.
+main actions in Search and Answers.  It will not work in Context Actions or Liveboard Actions.
  */
 // Add additional imports as needed.
 import {

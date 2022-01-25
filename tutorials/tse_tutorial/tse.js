@@ -12,7 +12,7 @@ import {
   AuthType,
   EmbedEvent,
   Page,
-  PinboardEmbed,
+  LiveboardEmbed,
   SearchEmbed,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
@@ -53,14 +53,14 @@ const onSearch = () => {
 const onLiveboard = () => {
   showMainApp();
 
-  // TODO replace the following with a PinboardEmbed component and render.
+  // TODO replace the following with a LiveboardEmbed component and render.
   document.getElementById("embed").innerHTML = "<p class='warning'>Liveboard not yet embedded.</p>";
 }
 
 const onVisualization = () => {
   showMainApp();
 
-  // TODO replace the following with a PinboardEmbed component and render.
+  // TODO replace the following with a LiveboardEmbed component and render.
   document.getElementById("embed").innerHTML = "<p class='warning'>Visualization not yet embedded.</p>";
 }
 

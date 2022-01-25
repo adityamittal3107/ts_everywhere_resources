@@ -25,7 +25,7 @@ export const tsLogout = async (tsurl) => {
 }
 
 /**
- * Returns a list of pinboards that the user has access to.
+ * Returns a list of liveboards that the user has access to.
  * Example:
    getPinboardList(tsurl).then(json, {
      // do something with the list.

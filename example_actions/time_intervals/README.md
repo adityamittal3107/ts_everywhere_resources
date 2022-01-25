@@ -21,17 +21,17 @@ Next, update the visualization IDs in the `<select>` options in `index.html`, e.
 </select>
 ~~~
 
-Finally, update the vizId to start with in the PinboardEmbed object in tse.js.
+Finally, update the vizId to start with in the LiveboardEmbed object in tse.js.
 
 `let vizId = "7e242033-2db1-41e4-ae2c-dd1488019059";`
 
 ## Solution
 
-In the `embedPinboardViz` function, add the embed component.
+In the `embedLiveboardViz` function, add the embed component.
 
 ~~~
-const embedPinboardViz = () => {
-  const embed = new PinboardEmbed("#embed", {
+const embedLiveboardViz = () => {
+  const embed = new LiveboardEmbed("#embed", {
     frameParams: { width:"100vw", height:"70vw" },
     pinboardId: "ff942c07-e1b6-4b5d-9d3b-51fac0cd7b8f",
     vizId: vizId,
