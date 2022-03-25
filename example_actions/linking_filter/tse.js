@@ -47,12 +47,12 @@ const embedPinboard = () => {
   // Sample embed.  The pinboardId GUID needs to exist in your system.
   const embed = new LiveboardEmbed("#embed", {
     frameParams: {},
-     pinboardId: "b22eabd5-6fa5-4342-847e-ca2abd5d54cc", // Replace with the GUID of a Pinboard in your instance
-     runtimeFilters: [{
-          columnName: columnNameToFilter, // eg: color
-          operator: RuntimeFilterOp.EQ,
-          values: filterValues // eg: red
-     }],
+    pinboardId: "b22eabd5-6fa5-4342-847e-ca2abd5d54cc",
+    runtimeFilters: [{
+      columnName: columnNameToFilter, // eg: color
+      operator: RuntimeFilterOp.EQ,
+      values: filterValues // eg: red
+    }],
   });
 
   embed
