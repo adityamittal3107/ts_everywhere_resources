@@ -6,7 +6,6 @@ import {
 } from "./dataclasses.js";
 
 import {
-  Action,
   LiveboardEmbed,
   RuntimeFilterOp,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';

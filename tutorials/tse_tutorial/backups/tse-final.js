@@ -3,7 +3,7 @@
  * It's recommended to refer to the documentation and Developer Playground to try to get it working before
  * using this file.
  */
-import {showPayload, closeModal} from "./custom-actions.js";
+import {showDetails} from "./custom-actions.js";
 
 import {
   init,
@@ -111,6 +111,25 @@ const onFull = () => {
   embed.render();
 }
 
+// Embed a custom action.
+const onCustomAction = () => {
+  showMainApp();
+
+  const embed = new LiveboardEmbed("#embed", {
+    frameParams: {},
+    liveboardId: "e40c0727-01e6-49db-bb2f-5aa19661477b",
+    vizId: "8d2e93ad-cae8-4c8e-a364-e7966a69a41e",
+    visibleActions: ["show-details"],
+  });
+
+  embed
+    .on(EmbedEvent.CustomAction, payload => {
+      if (payload.id === 'show-details') {
+        showDetails(payload);
+      }
+    })
+    .render();
+}
 //----------------------------------- Functions to manage the UI. -----------------------------------
 
 // functions to show and hide parts of the UI.
@@ -130,6 +149,12 @@ const clearEmbed = () => {
   div.innerHTML = "";
 }
 
+// closes the modal element when the close is selected.
+const closeModal = () => {
+  const showDataElement = document.getElementById('show-data')
+  showDataElement.style.display = 'none';  // hide the box.
+}
+
 //---------------------------- connect UI to code and start the app. ----------------------------
 
 // Show the URL to connect to.
@@ -144,9 +169,11 @@ document.getElementById('search-button').addEventListener('click', onSearch);
 document.getElementById('liveboard-button').addEventListener('click', onLiveboard);
 document.getElementById('viz-button').addEventListener('click', onVisualization);
 document.getElementById('full-app-button').addEventListener('click', onFull);
+document.getElementById('custom-action-button').addEventListener('click', onCustomAction);
 
 // Events for nav bar
 document.getElementById('search-link').addEventListener('click', onSearch);
 document.getElementById('liveboard-link').addEventListener('click', onLiveboard);
 document.getElementById('visualization-link').addEventListener('click', onVisualization);
 document.getElementById('full-application-link').addEventListener('click', onFull);
+document.getElementById('custom-action-link').addEventListener('click', onCustomAction);
