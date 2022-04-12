@@ -80,9 +80,6 @@ const showDetails = (payload) => {
       const detailsElement = document.getElementById("details");
       detailsElement.innerHTML = tabularDataToHTML(searchData);
       detailsElement.style.display = "block";
-
-
-
     })
     .catch(error => {
       console.error(error);
