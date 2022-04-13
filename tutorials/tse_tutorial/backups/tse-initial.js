@@ -16,6 +16,8 @@ import {
   SearchEmbed,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
+import {getSearchData} from "./rest-api.js";
+
 // TODO - set the following for your URL.
 const tsURL = "https://training.thoughtspot.cloud";
 
@@ -80,6 +82,91 @@ const onCustomAction = () => {
   document.getElementById("embed").innerHTML = "<p class='warning'>Custom action not yet embedded.</p>";
 }
 
+// Embed an example of using the SearchData api and highcharts.
+const onCustomChart = () => {
+  showMainApp();
+
+  const worksheetID = "1b1c237d-9de8-4542-bf1f-0c3157ddb8d2";  // GUID for Sample Retail - Apparel - Developer WS
+  const search = "[sales] [product type] [product] top 15";
+
+  getSearchData(tsURL, worksheetID, search).then(data => {
+    console.log(data);
+
+    // Get the indexes of the columns in the data.
+    const salesIdx = data.columnNames.findIndex(v => v == 'Total Sales');
+    const productTypeIdx = data.columnNames.findIndex(v => v == 'Product Type');
+    const productIdx = data.columnNames.findIndex(v => v == 'Product');
+
+    // convert the resulting data to the series for the HighChart.  Format is:
+    // [
+    //   { name: '<product type>', data: [{ name: <product>, value: <sales> }, ... ]}
+    //   { name: '<product type>', data: [{ name: <product>, value: <sales> }, ... ]}
+    // ]
+
+    const series = {}
+    for (const r of data.data) {
+      const productType = r[productTypeIdx]
+      if (! Object.keys(series).includes(productType)) {
+        series[productType] = []
+      }
+      // Combines all the data items to the key for each series.
+      series[productType].push({ name: r[productIdx], value: r[salesIdx]/1000});
+    }
+
+    // Now need to as the chart series.
+    const chartSeries = []
+    for (const productType of Object.keys(series)) {
+      chartSeries.push({name: productType, data: series[productType]})
+    }
+
+    // Render the chart.
+    Highcharts.chart('embed', {
+      chart: {
+        type: 'packedbubble'
+        /* height: '80%'*/
+      },
+      title: {
+        text: 'Sales of product by product type'
+      },
+      tooltip: {
+        useHTML: true,
+        pointFormat: '<b>{point.name}:</b> ${point.value:.1f}M</sub>'
+      },
+      plotOptions: {
+        packedbubble: {
+          minSize: '20%',
+          maxSize: '40%',
+          zMin: 0,
+          zMax: 1000,
+          layoutAlgorithm: {
+            gravitationalConstant: 0.05,
+            splitSeries: true,
+            seriesInteraction: false,
+            dragBetweenSeries: true,
+            parentNodeLimit: true
+          },
+          dataLabels: {
+            enabled: true,
+            format: '{point.name}',
+            filter: {
+              property: 'y',
+              operator: '>',
+              value: 250
+            },
+            style: {
+              color: 'black',
+              textOutline: 'none',
+              fontWeight: 'normal'
+            }
+          }
+        }
+      },
+      series: chartSeries
+    });
+  });
+
+}
+
 //----------------------------------- Functions to manage the UI. -----------------------------------
 
 // functions to show and hide parts of the UI.
@@ -119,7 +206,7 @@ document.getElementById('search-button').addEventListener('click', onSearch);
 document.getElementById('liveboard-button').addEventListener('click', onLiveboard);
 document.getElementById('viz-button').addEventListener('click', onVisualization);
 document.getElementById('full-app-button').addEventListener('click', onFull);
-document.getElementById('custom-action-button').addEventListener('click', onCustomAction);
+document.getElementById('custom-chart-button').addEventListener('click', onCustomChart);
 
 // Events for nav bar
 document.getElementById('search-link').addEventListener('click', onSearch);
@@ -127,3 +214,4 @@ document.getElementById('liveboard-link').addEventListener('click', onLiveboard)
 document.getElementById('visualization-link').addEventListener('click', onVisualization);
 document.getElementById('full-application-link').addEventListener('click', onFull);
 document.getElementById('custom-action-link').addEventListener('click', onCustomAction);
+document.getElementById('custom-chart-link').addEventListener('click', onCustomChart);
