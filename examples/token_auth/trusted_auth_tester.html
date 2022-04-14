@@ -144,7 +144,7 @@
             <!-- Analytics menu gets populated based on the menuItems object above-->
             <h3>Instructions</h3>
             <hr/>
-            <p>The input boxes above take in the necessary values to perform a Trusted Authentication flow in ThoughtSpot.</p>
+            <p>The input boxes above take in the necessary values to perform a Trusted Authentication flow in ThoughtSpot. Make sure your CORS and CSP settings are configured in ThoughtSpot to allow the server and port you host this page on.</p>
             <p>The "Liveboard GUID" can be found in the URL of any Liveboard (it is the value after '/pinboard/' in the URL)</p>
             <p>The Token value should be generated from your Authenticator Service using the using the <a href='https://developers.thoughtspot.com/docs/?pageid=session-api#session-authToken' target="_blank">/session/auth/token</a> API endpoint. This can be as simple as the built in Swagger portal at "/external/swagger" or a simple Python request to generate the token.</p>
             <p>The username field must match EXACTLY with the username value used to generate the token</p>
