@@ -104,7 +104,7 @@ h1 {
 }
 
 .tile-container {
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     box-sizing: border-box;
     padding: 10px;
     flex: 0 1 auto;
@@ -114,7 +114,7 @@ h1 {
   background-color: white;
   align-items: center;
   align-content: center;
-  width: 500px;
+  width: 375px;
   padding: 10px;
   margin: 5px;
   float: left;
@@ -130,8 +130,8 @@ h1 {
 }
 
 .tile-image {
-  height: 203px;
-  width: 515px;
+  height: 150px;
+  width: 300px;
 }
 
 .go-button {

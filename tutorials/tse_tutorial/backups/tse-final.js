@@ -15,7 +15,7 @@ import {
   LiveboardEmbed,
   SearchEmbed,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
-import {getSearchData} from "../rest-api";
+import {getSearchData} from "../rest-api.js";
 
 // TODO - set the following for your URL.
 const tsURL = "https://training.thoughtspot.cloud";
