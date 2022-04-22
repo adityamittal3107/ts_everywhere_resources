@@ -75,7 +75,7 @@ const onLiveboard = () => {
 
   const embed = new LiveboardEmbed("#embed", {
       frameParams: {},
-      pinboardId: "d084c256-e284-4fc4-b80c-111cb606449a",  // TODO - set to your liveboard ID.
+      pinboardId: "9c3d26af-cf1b-4e89-aa42-f60d34983827",  // TODO - set to your liveboard ID.
       disabledActions: [Action.DownloadAsPdf],
       disabledActionReason: 'Enterprise feature.',
       hiddenActions: [Action.LiveboardInfo]
