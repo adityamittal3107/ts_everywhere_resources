@@ -3,20 +3,21 @@
  * It's recommended to refer to the documentation and Developer Playground to try to get it working before
  * using this file.
  */
-import {showDetails} from "./custom-actions.js";
-
 import {
   init,
   Action,
   AppEmbed,
   AuthType,
   EmbedEvent,
-  Page,
+  HostEvent,
   LiveboardEmbed,
+  Page,
+  RuntimeFilterOp,
   SearchEmbed,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
 
 import {getSearchData} from "./rest-api.js";
+import {LiveboardContextActionData} from "./dataclasses.js";
 
 // TODO - set the following for your URL.
 const tsURL = "https://training.thoughtspot.cloud";
@@ -74,12 +75,26 @@ const onFull = () => {
   document.getElementById("embed").innerHTML = "<p class='warning'>Full app not yet embedded.</p>";
 }
 
-// Embed a visualization with custom action.
+// Embed a custom action.
 const onCustomAction = () => {
   showMainApp();
 
-  // TODO replace the following with an AppEmbed component and render.
+  // TODO replace the following with an AppEmbed component for content linking and render.
   document.getElementById("embed").innerHTML = "<p class='warning'>Custom action not yet embedded.</p>";
+}
+
+// Updates the global filterValues array, then re-runs the embedLiveboard to reload the original Liveboard with the updated values in the runtimeFilters
+const filterData = (embed, payload) => {
+  const actionData = LiveboardContextActionData.createFromJSON(payload);
+  const columnNameToFilter = actionData.columnNames[0];
+  const filterValues = [];
+  filterValues.push(actionData.data[columnNameToFilter][0]);
+
+  embed.trigger(HostEvent.UpdateRuntimeFilters, [{
+    columnName: columnNameToFilter,
+    operator: RuntimeFilterOp.EQ,
+    values: filterValues,
+  }]);
 }
 
 // Embed an example of using the SearchData api and highcharts.
@@ -186,12 +201,6 @@ const clearEmbed = () => {
   div.innerHTML = "";
 }
 
-// closes the modal element when the close is selected.
-const closeModal = () => {
-  const showDataElement = document.getElementById('show-data')
-  showDataElement.style.display = 'none';  // hide the box.
-}
-
 //---------------------------- connect UI to code and start the app. ----------------------------
 
 // Show the URL to connect to.
@@ -199,13 +208,13 @@ document.getElementById('ts-url').innerText = 'ThoughtSpot Server: ' + tsURL;
 
 // Hook up the events to the buttons and links.
 document.getElementById('login-button').addEventListener('click', onLogin);
-document.getElementById('close-modal').addEventListener('click', closeModal);
 
 // Events for buttons
 document.getElementById('search-button').addEventListener('click', onSearch);
 document.getElementById('liveboard-button').addEventListener('click', onLiveboard);
 document.getElementById('viz-button').addEventListener('click', onVisualization);
 document.getElementById('full-app-button').addEventListener('click', onFull);
+document.getElementById('custom-action-button').addEventListener('click', onCustomAction);
 document.getElementById('custom-chart-button').addEventListener('click', onCustomChart);
 
 // Events for nav bar
