@@ -3,19 +3,21 @@
  * It's recommended to refer to the documentation and Developer Playground to try to get it working before
  * using this file.
  */
-import {showDetails} from "./custom-actions.js";
-
 import {
   init,
   Action,
   AppEmbed,
   AuthType,
   EmbedEvent,
-  Page,
+  HostEvent,
   LiveboardEmbed,
+  Page,
+  RuntimeFilterOp,
   SearchEmbed,
 } from 'https://unpkg.com/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
-import {getSearchData} from "../rest-api.js";
+
+import {getSearchData} from "./rest-api.js";
+import {LiveboardContextActionData} from "./dataclasses.js";
 
 // TODO - set the following for your URL.
 const tsURL = "https://training.thoughtspot.cloud";
@@ -118,20 +120,33 @@ const onCustomAction = () => {
 
   const embed = new LiveboardEmbed("#embed", {
     frameParams: {},
-    liveboardId: "e40c0727-01e6-49db-bb2f-5aa19661477b",
-    vizId: "8d2e93ad-cae8-4c8e-a364-e7966a69a41e",
-    //visibleActions: ["show-details"],
-    hiddenActions: [],
+    pinboardId: "b504e160-3025-4508-a76a-1beb1f4b5eed",
   });
 
   embed
-    .on(EmbedEvent.CustomAction, payload => {
-      if (payload.id === 'show-details') {
-        showDetails(payload);
-      }
-    })
-    .render();
+  .on(EmbedEvent.CustomAction, (payload) => {
+    // The id is defined when creating the Custom Action in ThoughtSpot. Checking id attribute allows correct routing of multiple Custom Actions
+    if (payload.id === 'filter-content') {
+      filterData(embed, payload);
+    }
+  })
+  .render();
 }
+
+// Updates the global filterValues array, then re-runs the embedLiveboard to reload the original Liveboard with the updated values in the runtimeFilters
+const filterData = (embed, payload) => {
+  const actionData = LiveboardContextActionData.createFromJSON(payload);
+  const columnNameToFilter = actionData.columnNames[0];
+  const filterValues = [];
+  filterValues.push(actionData.data[columnNameToFilter][0]);
+
+  embed.trigger(HostEvent.UpdateRuntimeFilters, [{
+    columnName: columnNameToFilter,
+    operator: RuntimeFilterOp.EQ,
+    values: filterValues,
+  }]);
+}
+
 
 // Embed an example of using the SearchData api and highcharts.
 const onCustomChart = () => {
@@ -238,10 +253,10 @@ const clearEmbed = () => {
 }
 
 // closes the modal element when the close is selected.
-const closeModal = () => {
-  const showDataElement = document.getElementById('show-data')
-  showDataElement.style.display = 'none';  // hide the box.
-}
+//const closeModal = () => {
+//  const showDataElement = document.getElementById('show-data')
+//  showDataElement.style.display = 'none';  // hide the box.
+//}
 
 //---------------------------- connect UI to code and start the app. ----------------------------
 
@@ -250,7 +265,7 @@ document.getElementById('ts-url').innerText = 'ThoughtSpot Server: ' + tsURL;
 
 // Hook up the events to the buttons and links.
 document.getElementById('login-button').addEventListener('click', onLogin);
-document.getElementById('close-modal').addEventListener('click', closeModal);
+//document.getElementById('close-modal').addEventListener('click', closeModal);
 
 // Events for buttons
 document.getElementById('search-button').addEventListener('click', onSearch);
