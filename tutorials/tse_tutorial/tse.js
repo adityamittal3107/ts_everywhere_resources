@@ -206,6 +206,7 @@ document.getElementById('search-button').addEventListener('click', onSearch);
 document.getElementById('liveboard-button').addEventListener('click', onLiveboard);
 document.getElementById('viz-button').addEventListener('click', onVisualization);
 document.getElementById('full-app-button').addEventListener('click', onFull);
+document.getElementById('custom-action-button').addEventListener('click', onCustomAction);
 document.getElementById('custom-chart-button').addEventListener('click', onCustomChart);
 
 // Events for nav bar
