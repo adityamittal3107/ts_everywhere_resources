@@ -75,12 +75,6 @@ const onFull = () => {
   document.getElementById("embed").innerHTML = "<p class='warning'>Full app not yet embedded.</p>";
 }
 
-// Embed a visualization with custom action.
-const onCustomAction = () => {
-  showMainApp();
-
-}
-
 // Embed a custom action.
 const onCustomAction = () => {
   showMainApp();

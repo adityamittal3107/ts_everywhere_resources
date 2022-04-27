@@ -16,20 +16,13 @@ h1 {
 #header {
   height: 50px;
   line-height: 50px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   background-color: rgb(28,78,169);
-}
-
-.shop-logo {
-/*
-  width:;
-  height:;
-*/
 }
 
 .use-case-name {
   font-family: BB-Roller-Regular,Courrier,sans-serif;
-  font-size: 16px;
+  font-size: 24px;
   color: white;
 }
 
