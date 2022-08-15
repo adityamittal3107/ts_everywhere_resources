@@ -178,14 +178,7 @@ export class ActionData extends TabularData {
     const actionData = new ActionData(jsonData);
 
     try {
-      let dataRoot = jsonData.payload.embedAnswerData; // sep 21 release
-      if (!dataRoot) {
-        dataRoot = jsonData.data.embedAnswerData;  // jul-aug 21
-      }
-      if (!dataRoot) {
-        // Data root changed in pre-7.jul.cl.  This can be eventually taken out.
-        dataRoot = jsonData.data.columnsAndData;
-      }
+      const dataRoot = jsonData.data.embedAnswerData;  // 8.3+
 
       // Note that you can get more column names than data and that the data column are aligned by column ID.
       let originalColumnNames = [];
