@@ -425,6 +425,50 @@ export class SearchData extends TabularData {
 }
 
 /**
+ * Creates a new get answer data object.  
+ * This data format comes from the payload.answerService.fetchData(offset, batchSize) call from custom actions.
+ */
+export class GetAnswerData extends TabularData {
+
+  /**
+   * Creats a new get answer data object.
+   * @param jsonData The response  from a payload.answerService.fetchData(offset, batchSize)
+   */
+  static createFromJSON(jsonData) {
+    const getAnswerData = new GetAnswerData(jsonData);
+    try {
+      let viz;
+      for (const v of jsonData.getAnswer.answer.visualizations) {  // visualizations is an array
+        console.log(v);
+        // Assuming that the fist visualization with data is the one we want.
+        if (v.hasOwnProperty('data')) {
+          // get the column name.s
+          const colNames = [];
+          for (const c of v.columns) {
+            colNames.push(c.column.name);
+          }
+          getAnswerData.columnNames = colNames;
+
+          // get the data values.
+          const columnValues = []
+          for (const d of v.data[0].columnDataLite) {
+             const columnData = JSON.parse(d.dataValue);
+             columnValues.push(columnData);
+          }
+          getAnswerData.populateDataByColumn(columnValues);
+        }
+      }
+    } catch (error) {
+      console.error(`Error creating get answer data: ${error}`);
+      console.error(jsonData);
+    }
+
+    return getAnswerData;
+  }
+
+}
+
+/**
  * Converts a tabular data object to an HTML table for display.
  * @param tabularData
  * @returns {string}
