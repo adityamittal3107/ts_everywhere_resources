@@ -77,6 +77,7 @@ const onLiveboard = () => {
 
   const embed = new LiveboardEmbed("#embed", {
       frameParams: {},
+      liveboardV2: false,
       pinboardId: "9c3d26af-cf1b-4e89-aa42-f60d34983827",  // TODO - set to your liveboard ID.
       disabledActions: [Action.DownloadAsPdf],
       disabledActionReason: 'Enterprise feature.',
@@ -91,6 +92,7 @@ const onVisualization = () => {
 
   const embed = new LiveboardEmbed("#embed", {
     frameParams: {},
+    liveboardV2: false,
     liveboardId: "9c3d26af-cf1b-4e89-aa42-f60d34983827",
     vizId: "9564b208-39b9-4349-9f06-3c989a9e1863",
   });
@@ -104,6 +106,7 @@ const onFull = () => {
 
   const embed = new AppEmbed('#embed', {
     frameParams: {},
+    liveboardV2: false,
     showPrimaryNavbar: false,  // set to true to show the ThoughtSpot navbar
     pageId: Page.Home, // loads the Home tab, but you can start on any main tab - try Page.Search
     disabledActions: [], // list of any actions you don't want the users to use, but still see
@@ -120,6 +123,7 @@ const onCustomAction = () => {
 
   const embed = new LiveboardEmbed("#embed", {
     frameParams: {},
+    liveboardV2: false,
     pinboardId: "b504e160-3025-4508-a76a-1beb1f4b5eed",
   });
 
