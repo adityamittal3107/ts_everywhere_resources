@@ -117,7 +117,7 @@
 
 <!-- Custom Top Menu -->    
 <div id='topMenu'>
-    <h2>Custom Top Menu --> <a href='#'>Home</a> | <a href='#'>Reports</a> | &nbsp; <button id='topMenuButton' onclick="">Action Button</button></h2>
+    <h2>Custom Top Menu --> <a href='#'>Home</a> | <a href='#'>Reports</a> | &nbsp; <button id='topMenuButton'>Action Button</button></h2>
 </div>
     
       <!-- Floating button -->
@@ -178,7 +178,7 @@
 
 <!-- Put the ThoughtSpot EmbedSDK script down here so it runs after the page loads fully -->
 <script type='module'>
-    let tsHost = "{}.thoughtspot.cloud";
+    let tsHost = "https://{}";
     let pId = "9a16fe2f-7d13-42fc-b27f-e0095da678ed";
 // Import ThoughtSpot SDK
 import {
@@ -187,6 +187,7 @@ import {
   Action,
   RuntimeFilterOp,
   EmbedEvent,
+  HostEvent,
   AuthType,
   Page
 } from 'https://cdn.jsdelivr.net/npm/@thoughtspot/visual-embed-sdk/dist/tsembed.es.js';
@@ -367,6 +368,21 @@ embed
     .render()
     
    //.render();
+
+// Trigger the new HostEvent.GetTML
+function getCurrentTML(){
+    console.log('Triggering HostEvent.GetTML');
+    embed.trigger(HostEvent.GetTML).then( (response) => {
+        console.log('GetTML returns:');
+        console.log(response);
+        console.log('TML Search String:');
+        let tmlSearchQuery = response.answer.search_query;
+        console.log(tmlSearchQuery);
+        // You can then use the tmlSearchQuery with the Search Data REST API
+    });
+}
+// Assign to click of the Top Bar Button. You could instead have the code run from a given Cum Action
+document.getElementById('topMenuButton').onclick = getCurrentTML;
 
 // Functions to show and hide a loader while iframe loads
 function showLoader(response) {
