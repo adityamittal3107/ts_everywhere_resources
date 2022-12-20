@@ -32,7 +32,7 @@ embed
 .on(EmbedEvent.CustomAction, (payload) => {
   // The id is defined when creating the Custom Action in ThoughtSpot. 
   // Checking id attribute allows correct routing of multiple Custom Actions
- if (payload.data.id === 'download-csv') { // here use payload.id in place of payload.data.id
+ if (payload.id === 'download-csv') { // here use payload.id in place of payload.data.id
    downloadCSV(payload);
  }
 })
@@ -47,7 +47,7 @@ Finally, the `downloadCSV()` function will handle the content and call to render
 const downloadCSV = (payload) => {
 
   // Requires dataclasses.js from the /apis folder.
-  const actionData = ActionData.createFromJSON(payload); // use LiveboardActionData in place of ActionData in case of using liveboard and pass payload.data
+  const actionData = LiveboardActionData.createFromJSON(payload.data); 
 // in place of payload
   const csv = tabularDataToCSV(actionData);
 
